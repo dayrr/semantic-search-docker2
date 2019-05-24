@@ -1,5 +1,17 @@
 var featureQueries =
 {
+
+    "commune":
+        "prefix oau: <http://melodi.irit.fr/ontologies/administrativeUnits.owl#> "
+        + "prefix geo: <http://www.opengis.net/ont/geosparql#> "
+        + "select ?uri ?name  where { "
+        + "?uri a oau:Commune . "
+        + "?uri oau:hasName ?name.}"
+}
+
+
+var featureQueries2 =
+{
     "station":
         "prefix mfo: <http://melodi.irit.fr/ontologies/mfo.owl#>"
         + "prefix geo: <http://www.opengis.net/ont/geosparql#>  "
@@ -194,6 +206,10 @@ var prefixes = [{
 {
     "prefix": "owl",
     "uri": "http://www.w3.org/2002/07/owl#"
+},
+{
+    "prefix": "prov",
+    "uri": "http://www.w3.org/ns/prov-o#"
 }
 
 ];
@@ -264,7 +280,7 @@ var queries = [{
         "?unit change:hasChange ?change. \n" +
         "?changeType change:hasClass ?change. \n" +
         " ?changeType time:hasTime ?timeInterval.  \n intervalfilter" +
-        " ?changeHigh change:hasChangePercentage ?highChangePercentage. \n" +
+        " ?change change:hasChangePercentage ?highChangePercentage. \n" +
         "} limit 200", "title": "Change detection results"
 },
 
@@ -279,7 +295,194 @@ var queries = [{
         " ?obs vy:hasTime ?timeInterval.   \n intervalfilter" +
         " ?obs vy:hasDeterioration ?deterioration. \n" +
         "} limit 200", "title": "Vineyard health survey"
+},
+{
+    "query": " SELECT ?a ?dt ?n ?p \n" +
+        "   WHERE { \n" +
+        "   ?featurefilterDoc ndvi:hasNdvi ?n. \n" +
+        "   ?n prov:wasGeneratedBy ?a. \n" +
+        "   ?a prov:startedAtTime ?dti. \n instantfilter" +
+        "   ?n ndvi:hasNdviPercentage ?p. \n" +
+        "} limit 200", "title": "NDVI computation"
 }
+
+];
+
+var queriesFeature = [{
+    "query": "SELECT ?uri ?name ?wkt \n WHERE \n" +
+        " { \n ?uri a admin:Commune. \n" +
+
+        " ?uri admin:hasName ?name. \n" +
+        " filter(?name=\"?featurename\"^^<http://www.w3.org/2001/XMLSchema#String>). \n" +
+        " ?uri admin:hasSpatialRepresentation ?sp. \n" +
+        " ?uri owl:sameAs ?insee. " +
+        " ?sp geo:hasGeometry ?geo. \n" +
+        " ?geo geo:asWKT ?wkt. \n" +
+        "  } ", "title": "Administrative units dataset"
+}];
+
+var queriesSemantic = [{
+    "query": "SELECT ?lv ?label  \n" +
+        " WHERE \n" +
+        "  { ?lv rdfs:subClassOf ndvi:VegetationLevel. \n" +
+        "   ?lv rdfs:label ?label. \n" +
+        "   } ", "title": "NDVI Level"
+
+},
+{
+    "query": "SELECT ?lv ?label  \n" +
+        " WHERE \n" +
+        "  { ?lv rdfs:subClassOf change:Change. \n" +
+        "   ?lv rdfs:label ?label. \n" +
+        "   } ", "title": "Change Level"
+
+},
+{
+    "query": "SELECT ?lv ?label \n WHERE \n" +
+        " { ?lv a vy:DeteriorationLevel. \n" +
+        " ?lv rdfs:label ?label. \n" +
+        "  } ", "title": "Deterioration Level"
+
+}
+]
+
+
+
+var queriesFeatureSemantic = [{
+    "query": "SELECT ?uri ?name ?wkt \n" +
+        " WHERE \n{  \n" +
+        " ?obs a vy:VineyardObservation. \n" +
+        " ?obs vy:hasDeterioration semanticfilter. \n" +
+        " ?obs vy:hasFeatureOfInterest ?uri. \n" +
+        " ?uri admin:hasName ?name. \n" +
+        " ?uri admin:hasSpatialRepresentation ?fea. \n" +
+        " ?fea geo:hasGeometry ?geo. \n" +
+        " ?geo geo:asWKT ?wkt. \n spatialfilter" +
+        " ?obs vy:hasTime ?timeInterval.   \n intervalfilter" +
+        "} limit 200", "title": "Commune by vineyard health survey"
+
+},
+
+{
+    "query": "SELECT ?uri ?name ?wkt \n" +
+        " WHERE \n{  \n" +
+        " ?obs a vy:VineyardObservation. \n" +
+        " ?obs vy:hasDeterioration semanticfilter. \n" +
+        " ?obs vy:hasFeatureOfInterest ?uri. \n" +
+        " ?uri admin:hasName ?name. \n" +
+        " ?uri admin:hasSpatialRepresentation ?fea. \n" +
+        " ?fea geo:hasGeometry ?geo. \n" +
+        " ?geo geo:asWKT ?wkt. \n spatialfilter" +
+        " ?obs vy:hasTime ?timeInterval.   \n intervalfilter" +
+        "} limit 200", "title": "Commune by vineyard health survey"
+
+},
+
+{
+    "query": "SELECT ?uri ?name ?wkt \n" +
+        " WHERE \n{  \n" +
+        " ?obs a vy:VineyardObservation. \n" +
+        " ?obs vy:hasDeterioration semanticfilter. \n" +
+        " ?obs vy:hasFeatureOfInterest ?uri. \n" +
+        " ?uri admin:hasName ?name. \n" +
+        " ?uri admin:hasSpatialRepresentation ?fea. \n" +
+        " ?fea geo:hasGeometry ?geo. \n" +
+        " ?geo geo:asWKT ?wkt. \n spatialfilter" +
+        " ?obs vy:hasTime ?timeInterval.   \n intervalfilter" +
+        "} limit 200", "title": "Commune by vineyard health survey"
+
+},
+
+
+]
+
+
+var queriesDoc = [{
+    "query": "SELECT ?uri ?name ?wkt \n WHERE \n" +
+        " { \n ?uri a admin:Commune. \n" +
+        " ?uri admin:hasName ?name. \n" +
+        " ?uri admin:hasSpatialRepresentation ?sp. \n" +
+        " ?uri owl:sameAs ?insee. " +
+        " ?sp geo:hasGeometry ?geo. \n" +
+        " ?geo geo:asWKT ?wkt. \n spatialfilter" +
+        "  } ", "title": "Administrative units dataset"
+},
+
+{
+    "query": "SELECT ?observation ?tile ?dti \n" +
+        "WHERE {  \n" +
+        "?observation a eom:EarthObservation. \n" +
+        "?observation sosa:hasFeatureOfInterest ?tile. \n" +
+        "?tile geo:hasGeometry ?geo.  \n" +
+        "?geo geo:asWKT ?wkt. \n spatialfilterDoc" +
+        "?tile grid:id ?tileId. \n" +
+        "?observation sosa:resultTime ?dt. \n tempofilter" +
+        "} limit 200", "title": "Earth observation dataset"
+},
+
+
+{
+    "query": "SELECT ?observation ?place ?dti ?description \n" +
+        " WHERE {  \n" +
+        "?observation a meteo-evt:Observation. \n" +
+        "?observation sosa:hasFeatureOfInterest ?place.  \n" +
+        "?place admin:hasSpatialRepresentation ?fea.  \n" +
+        "?fea geo:hasGeometry ?geo.  \n" +
+        "?geo geo:asWKT ?wkt. \n spatialfilterDoc" +
+        "?observation sosa:hasResult ?result. \n" +
+        "?observation sosa:resultTime ?dt. \n tempofilter" +
+        "?result rdfs:comment  ?description. \n" +
+        "} limit 200", "title": "Forecast bulletin dataset"
+},
+
+
+{
+    "query": "SELECT ?observation ?dti ?procedure ?sensor ?value \n WHERE \n" +
+        "{ \n" +
+        "?observation a mfo:Observation. \n" +
+        "?observation sosa:hasFeatureOfInterest ?feature. \n" +
+        "?feature mfo:contains ?featurefilterDoc.  \n" +
+        "?observation sosa:resultTime ?dt. \n tempofilter" +
+        "?observation sosa:hasResult ?result. \n" +
+        "?result qudt-1-1:numericValue ?value. \n" +
+        "?observation sosa:observedProperty ?obsprop. \n" +
+        "?observation sosa:madeBySensor ?sensor. \n" +
+        "?observation sosa:usedProcedure ?procedure. \n" +
+        "} limit 2000", "title": "Weather Forecast dataset"
+},
+
+{
+    "query": "Select ?change ?dti1 ?dti2 ?percentage \n WHERE \n{ \n" +
+
+        " ?featurefilterDoc change:hasChange ?change. \n" +
+        " ?changeType change:hasClass ?change. \n" +
+        " ?changeType time:hasTime ?timeInterval.  \n intervalfilter" +
+        " ?change change:hasChangePercentage ?percentage. \n" +
+        "} limit 2000", "title": "Change detection results"
+},
+
+{
+    "query": "SELECT ?observation ?dti1 ?dti2 ?deterioration \n" +
+        " WHERE \n{  \n" +
+        " ?observation a vy:VineyardObservation. \n" +
+        " ?observation vy:hasFeatureOfInterest ?featurefilterDoc. \n" +
+        " ?observation vy:hasTime ?timeInterval.   \n intervalfilter" +
+        " ?observation vy:hasDeterioration ?deterioration. \n" +
+        "} limit 200", "title": "Vineyard health survey"
+},
+{
+    "query": " SELECT ?ndvi ?dti ?n ?percentage \n" +
+        "   WHERE { \n" +
+        "   ?featurefilterDoc ndvi:hasNdvi ?ndvi. \n" +
+        "   ?ndvi prov:wasGeneratedBy ?action. \n" +
+        "   ?action prov:startedAtTime ?dti. \n instantfilter" +
+        "   ?ndvi ndvi:hasNdviPercentage ?percentage. \n" +
+        "} limit 200", "title": "NDVI computation"
+}
+
+
+
+
 
 ];
 

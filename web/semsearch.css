@@ -21,9 +21,10 @@
             clear: both;
         }
 
-        #map {
+        #map, #mapDraw {
             width: 750px;
             height: 500px;
+            float: left;
         }
 
         #sem {
@@ -40,8 +41,8 @@
             border: 1px solid #cccccc;
             bottom: 12px;
             left: -50px;
-            min-width: 350px;
-            max-width: 450px;
+            min-width: 450px;
+            max-width: 650px;
             opacity: 0.75;
             font-size: 100% !important;
         }
@@ -98,7 +99,7 @@
         }
 
         #feature {
-            width: 130px;
+            width: 200px;
         }
 
         #btn {
@@ -134,4 +135,68 @@
         #btnsem {
             margin-top: -3px;
             margin-left: 10px;
+        }
+
+        .easy-autocomplete {
+            float: right !important;
+            width: 280px !important;
+            margin-top: -5px !important;
+        }
+
+        .min {
+            width: 250px;
+            height: 35px;
+            overflow: hidden !important;
+            position: absolute !important;
+            top: 50px !important;
+        }
+
+        .min .modal-dialog, .min .modal-content {
+            height: 100%;
+            width: 100%;
+            margin: 0px !important;
+            padding: 0px !important;
+        }
+
+        .min .modal-header {
+            height: 100%;
+            width: 100%;
+            margin: 0px !important;
+            padding: 3px 5px !important;
+        }
+
+        .display-none {
+            display: none;
+        }
+
+        button .fa {
+            font-size: 16px;
+            margin-left: 10px;
+        }
+
+        .min .fa {
+            font-size: 14px;
+        }
+
+        .min .menuTab {
+            display: none;
+        }
+
+        button:focus {
+            outline: none;
+        }
+
+        .minmaxCon {
+            height: 35px;
+            bottom: 1px;
+            left: 1px;
+           
+            right: 1px;
+            z-index: 9999;
+            float: right;
+            margin: 25px 25px 0 0;
+        }
+
+        .modal-open {
+             overflow: scroll !important;
         }

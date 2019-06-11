@@ -11,6 +11,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/tabulator/4.2.3/js/tabulator.min.js"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/tabulator/4.2.3/css/tabulator.min.css" rel="stylesheet">
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.bundle.js"></script>
     <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
     <script src="data.js"></script>
     <script src="jquery.easy-autocomplete.min.js"></script>
@@ -95,6 +96,7 @@
                 </div>
             </div>
             <div class="col-md-1">
+                <button type="button" id='btnGraphic' class="btn btn-success">Graphical mode</button>
                 <button type="button" id='btnSearch' class="btn btn-success"> <span
                         class="glyphicon glyphicon-search"></span>
                     Search
@@ -105,7 +107,7 @@
 
 
 
-
+        <div id='graphic'><canvas id='meteochart'> </canvas></div>
         <div id='list'>
             <div id='title0'> </div>
             <div id='list0'> </div>
@@ -149,6 +151,7 @@
                     </div>
 
                     <div id='layers'>
+                        <input type="checkbox" name='layer' value='cesbio'> Cesbio LC 2014<br>
                         <input type="checkbox" name='layer' value='tile'> Tile <br>
                         <input type="checkbox" name='layer' value='station'> Station <br>
                         <input type="checkbox" name='layer' value='region'> Region <br>

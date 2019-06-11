@@ -1,202 +1,205 @@
-        button {
-            margin-right: 10px;
-            margin-top: 10px
-        }
+.carousel-inner>.item>img {
+    margin: 0 auto;
+}
 
-        .submenu {
-            float: right;
-        }
+button {
+    margin-right: 10px;
+    margin-top: 10px
+}
 
-        .result {
-            clear: both;
-            height: 250px;
-            overflow: scroll;
-        }
+.submenu {
+    float: right;
+}
 
-        h3 {
-            display: inline-block;
-        }
+.result {
+    clear: both;
+    height: 250px;
+    overflow: scroll;
+}
 
-        #drawncoords {
-            clear: both;
-        }
+h3 {
+    display: inline-block;
+}
 
-        #map, #mapDraw {
-            width: 750px;
-            height: 500px;
-            float: left;
-        }
+#drawncoords {
+    clear: both;
+}
 
-        #sem {
-            vertical-align: top;
-        }
+#map, #mapDraw {
+    width: 750px;
+    height: 500px;
+    float: left;
+}
 
-        .ol-popup {
-            position: absolute;
-            background-color: white;
-            -webkit-filter: drop-shadow(0 1px 4px rgba(0, 0, 0, 0.2));
-            filter: drop-shadow(0 1px 4px rgba(0, 0, 0, 0.2));
-            padding: 15px;
-            border-radius: 10px;
-            border: 1px solid #cccccc;
-            bottom: 12px;
-            left: -50px;
-            min-width: 450px;
-            max-width: 650px;
-            opacity: 0.75;
-            font-size: 100% !important;
-        }
+#sem {
+    vertical-align: top;
+}
 
-        .ol-popup:after, .ol-popup:before {
-            top: 100%;
-            border: solid transparent;
-            content: " ";
-            height: 0;
-            width: 0;
-            position: absolute;
-            pointer-events: none;
-        }
+.ol-popup {
+    position: absolute;
+    background-color: white;
+    -webkit-filter: drop-shadow(0 1px 4px rgba(0, 0, 0, 0.2));
+    filter: drop-shadow(0 1px 4px rgba(0, 0, 0, 0.2));
+    padding: 15px;
+    border-radius: 10px;
+    border: 1px solid #cccccc;
+    bottom: 12px;
+    left: -50px;
+    min-width: 450px;
+    max-width: 650px;
+    opacity: 0.75;
+    font-size: 100% !important;
+}
 
-        .ol-popup:after {
-            border-top-color: white;
-            border-width: 10px;
-            left: 48px;
-            margin-left: -10px;
-        }
+.ol-popup:after, .ol-popup:before {
+    top: 100%;
+    border: solid transparent;
+    content: " ";
+    height: 0;
+    width: 0;
+    position: absolute;
+    pointer-events: none;
+}
 
-        .ol-popup:before {
-            border-top-color: #cccccc;
-            border-width: 11px;
-            left: 48px;
-            margin-left: -11px;
-        }
+.ol-popup:after {
+    border-top-color: white;
+    border-width: 10px;
+    left: 48px;
+    margin-left: -10px;
+}
 
-        .ol-popup-closer {
-            text-decoration: none;
-            position: absolute;
-            top: 2px;
-            right: 8px;
-        }
+.ol-popup:before {
+    border-top-color: #cccccc;
+    border-width: 11px;
+    left: 48px;
+    margin-left: -11px;
+}
 
-        .ol-popup-closer:after {
-            content: "x";
-        }
+.ol-popup-closer {
+    text-decoration: none;
+    position: absolute;
+    top: 2px;
+    right: 8px;
+}
 
-        #listsem {
-            width: 200px;
-        }
+.ol-popup-closer:after {
+    content: "x";
+}
 
-        #geoviz, #mapcontainer, #listsem {
-            float: left;
-        }
+#listsem {
+    width: 200px;
+}
 
-        #layers {
-            float: right;
-        }
+#geoviz, #mapcontainer, #listsem {
+    float: left;
+}
 
-        #geom {
-            width: 130px;
-        }
+#layers {
+    float: right;
+}
 
-        #feature {
-            width: 200px;
-        }
+#geom {
+    width: 130px;
+}
 
-        #btn {
-            text-align: center;
-            align-items: center;
-        }
+#feature {
+    width: 200px;
+}
 
-        #list {
-            clear: both;
-            font-size: 100% !important;
-        }
+#btn {
+    text-align: center;
+    align-items: center;
+}
 
-        .controlgroup {
-            float: left;
-            vertical-align: middle;
-            padding: px;
-        }
+#list {
+    clear: both;
+    font-size: 100% !important;
+}
 
-        input {
-            margin: 2px;
-        }
+.controlgroup {
+    float: left;
+    vertical-align: middle;
+    padding: px;
+}
 
-        select {
-            margin-top: -6px;
-            margin-bot: -6px;
-        }
+input {
+    margin: 2px;
+}
 
-        #btnSearch {
-            margin-top: 25px;
-            margin-left: 25px;
-        }
+select {
+    margin-top: -6px;
+    margin-bot: -6px;
+}
 
-        #btnsem {
-            margin-top: -3px;
-            margin-left: 10px;
-        }
+#btnSearch {
+    margin-top: 25px;
+    margin-left: 25px;
+}
 
-        .easy-autocomplete {
-            float: right !important;
-            width: 280px !important;
-            margin-top: -5px !important;
-        }
+#btnsem {
+    margin-top: -3px;
+    margin-left: 10px;
+}
 
-        .min {
-            width: 250px;
-            height: 35px;
-            overflow: hidden !important;
-            position: absolute !important;
-            top: 50px !important;
-        }
+.easy-autocomplete {
+    float: right !important;
+    width: 280px !important;
+    margin-top: -5px !important;
+}
 
-        .min .modal-dialog, .min .modal-content {
-            height: 100%;
-            width: 100%;
-            margin: 0px !important;
-            padding: 0px !important;
-        }
+.min {
+    width: 250px;
+    height: 35px;
+    overflow: hidden !important;
+    position: absolute !important;
+    top: 50px !important;
+}
 
-        .min .modal-header {
-            height: 100%;
-            width: 100%;
-            margin: 0px !important;
-            padding: 3px 5px !important;
-        }
+.min .modal-dialog, .min .modal-content {
+    height: 100%;
+    width: 100%;
+    margin: 0px !important;
+    padding: 0px !important;
+}
 
-        .display-none {
-            display: none;
-        }
+.min .modal-header {
+    height: 100%;
+    width: 100%;
+    margin: 0px !important;
+    padding: 3px 5px !important;
+}
 
-        button .fa {
-            font-size: 16px;
-            margin-left: 10px;
-        }
+.display-none {
+    display: none;
+}
 
-        .min .fa {
-            font-size: 14px;
-        }
+button .fa {
+    font-size: 16px;
+    margin-left: 10px;
+}
 
-        .min .menuTab {
-            display: none;
-        }
+.min .fa {
+    font-size: 14px;
+}
 
-        button:focus {
-            outline: none;
-        }
+.min .menuTab {
+    display: none;
+}
 
-        .minmaxCon {
-            height: 35px;
-            bottom: 1px;
-            left: 1px;
-           
-            right: 1px;
-            z-index: 9999;
-            float: right;
-            margin: 25px 25px 0 0;
-        }
+button:focus {
+    outline: none;
+}
 
-        .modal-open {
-             overflow: scroll !important;
-        }
+.minmaxCon {
+    height: 35px;
+    bottom: 1px;
+    left: 1px;
+    right: 1px;
+    z-index: 9999;
+    float: right;
+    margin: 25px 25px 0 0;
+}
+
+.modal-open {
+    overflow: scroll !important;
+}

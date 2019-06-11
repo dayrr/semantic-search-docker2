@@ -193,6 +193,16 @@ DrawLayer = new ol.layer.Vector({
     source: DrawingVectorSource
 });
 
+CesbioLayer = new ol.layer.Tile({
+    title: '2014 Stratification 4 urban classes',
+    visible: true,
+    source: new ol.source.TileWMS({
+        url: 'http://cyan.ups-tlse.fr:8080/geoserver/Theia_OSO/wms?',
+        serverType: 'geoserver',
+        params: { 'LAYERS': 'Theia_OSO:Classif_France2014_refV3v7_regionClimat_ColorIndexed_4urban', 'TILED': true }
+    })
+})
+
 mapDraw.addLayer(TileLayer);
 mapDraw.addLayer(StationLayer);
 mapDraw.addLayer(RegionLayer);
@@ -201,10 +211,14 @@ mapDraw.addLayer(RSLayer);
 mapDraw.addLayer(DrawLayer);
 mapDraw.addLayer(FeatureLayer);
 mapDraw.addLayer(vector);
+mapDraw.addLayer(CesbioLayer);
 TileLayer.setVisible(false);
 StationLayer.setVisible(false);
 RegionLayer.setVisible(false);
 DepartementLayer.setVisible(false);
+CesbioLayer.setVisible(false);
+CesbioLayer.setZIndex(0);
+CesbioLayer.setOpacity(0.2);
 
 
 mapDraw.on('singleclick', function (evt) {
@@ -212,8 +226,8 @@ mapDraw.on('singleclick', function (evt) {
         mapDraw.forEachFeatureAtPixel(evt.pixel, function (feature, layer) {
 
             let uri = feature.get("uri");
-           // alert(uri);
-            content.innerHTML = '<b> Name:</b>' + feature.get("name") + '</br><b>URI:</b> ' + uri ;//+
+            // alert(uri);
+            content.innerHTML = '<b> Name:</b>' + feature.get("name") + '</br><b>URI:</b> ' + uri;//+
             //    '</br><a class="ui-button ui-widget ui-corner-all" href="javascript:viewFeature(\'' + uri + '\');">View</a>';
 
             overlay.setPosition(evt.coordinate);

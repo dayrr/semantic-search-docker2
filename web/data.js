@@ -1,3 +1,95 @@
+var changes = [
+    {
+        "name": "No change (%)",
+        "uri": "http://melodi.irit.fr/ontologies/change.owl#NoChange",
+        "color": "#ffe119"
+    },
+    {
+        "name": "Low change (%)",
+        "uri": "http://melodi.irit.fr/ontologies/change.owl#LowChange",
+        "color": "#4363d8"
+    },
+    {
+        "name": "Middle change (%)",
+        "uri": "http://melodi.irit.fr/ontologies/change.owl#MidChange",
+        "color": "#f58231"
+    },
+    {
+        "name": "High change (%)",
+        "uri": "http://melodi.irit.fr/ontologies/change.owl#HighChange",
+        "color": "#3cb44b"
+    }
+]
+var mesures = [
+    {
+        "name": "Atmospheric Pressure (Pa)",
+        "uri": "pmer",
+        "color": "aqua"
+    },
+    {
+        "name": "Atmospheric Pressure Variation (Pa)",
+        "uri": "tend",
+        "color": "black"
+    },
+    {
+        "name": "Wind Direction (DegreeAngle)",
+        "uri": "dd",
+        "color": "blue"
+    },
+    {
+        "name": "Wind Speed (m/s)",
+        "uri": "ff",
+        "color": "fuchsia"
+    },
+    {
+        "name": "Temperature (Kelvin)",
+        "uri": "t",
+        "color": "green"
+    },
+    {
+        "name": "Temperature 2 (Kelvin)",
+        "uri": "td",
+        "color": "lime"
+    },
+    {
+        "name": "Humidity (%)",
+        "uri": "u",
+        "color": "maroon"
+    },
+
+    {
+        "name": "Visibility (m)",
+        "uri": "vv",
+        "color": "navy"
+    },
+
+    //   {
+    //        "name":"Atmospheric Pressure (Pa)",
+    //        "uri":"ww"
+    //    },
+
+    {
+        "name": "Cloud Cover (octa)",
+        "uri": "hbas",
+        "color": "olive"
+    },
+    {
+        "name": "Station Atmospheric Pressure (Pa)",
+        "uri": "pres",
+        "color": "orange"
+    },
+    {
+        "name": "Ground Temperature (Kelvin)",
+        "uri": "tminsol",
+        "color": "purple"
+    },
+
+
+]
+
+
+
+
 var featureQueries =
 {
 
@@ -409,7 +501,7 @@ var queriesDoc = [{
 },
 
 {
-    "query": "SELECT ?observation ?tile ?dti \n" +
+    "query": "SELECT ?observation ?tile ?level ?dti ?cloudCover ?link ?size ?quicklook \n" +
         "WHERE {  \n" +
         "?observation a eom:EarthObservation. \n" +
         "?observation sosa:hasFeatureOfInterest ?tile. \n" +
@@ -417,7 +509,14 @@ var queriesDoc = [{
         "?geo geo:asWKT ?wkt. \n spatialfilterDoc" +
         "?tile grid:id ?tileId. \n" +
         "?observation sosa:resultTime ?dt. \n tempofilter" +
-        "} limit 200", "title": "Earth observation dataset"
+        "?observation sosa:hasResult ?result. " +
+        "?result eom:browse ?browse." +
+        "?browse eom:fileName ?quicklook. " +
+        "?result eom:product ?product. " +
+        "?product eom:fileName ?link." +
+        "?product eom:size ?size. " +
+        "?product eom:cloudCover ?cloudCover. " +
+        "?observation eom:processingLevel ?level. } order by ?dti", "title": "Earth observation dataset"
 },
 
 
@@ -448,17 +547,17 @@ var queriesDoc = [{
         "?observation sosa:observedProperty ?obsprop. \n" +
         "?observation sosa:madeBySensor ?sensor. \n" +
         "?observation sosa:usedProcedure ?procedure. \n" +
-        "} limit 2000", "title": "Weather Forecast dataset"
+        "} order by ?dti", "title": "Weather Forecast dataset"
 },
 
 {
-    "query": "Select ?change ?dti1 ?dti2 ?percentage \n WHERE \n{ \n" +
+    "query": "Select ?change ?type ?dti1 ?dti2 ?percentage \n WHERE \n{ \n" +
 
         " ?featurefilterDoc change:hasChange ?change. \n" +
         " ?changeType change:hasClass ?change. \n" +
         " ?changeType time:hasTime ?timeInterval.  \n intervalfilter" +
         " ?change change:hasChangePercentage ?percentage. \n" +
-        "} limit 2000", "title": "Change detection results"
+        " ?change rdf:type ?type. } order by ?type ?dti1", "title": "Change detection results"
 },
 
 {

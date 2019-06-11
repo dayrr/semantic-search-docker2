@@ -3,6 +3,7 @@ $('#geom').prop("disabled", true);
 $('#feature').prop("disabled", false);
 var queryJSON = '?handle=download&format=SPARQL%2FJSON&submit=Query&view=HTML&query='
 var queryGeoJSON = '?handle=download&format=GeoJSON&submit=Query&view=HTML&query='
+var json = [];
 
 function loadWKT(ds) {
   let query = host + queryJSON + encodeURIComponent(wktQueries[ds]);
@@ -129,6 +130,9 @@ $('#layers input:checkbox').click(function () {
           loadWKT('departement');
         DepartementLayer.setVisible(true);
         break;
+      case 'cesbio':
+        CesbioLayer.setVisible(true);
+        break;
     }
   else
     switch ($(this).val()) {
@@ -144,14 +148,17 @@ $('#layers input:checkbox').click(function () {
       case 'departement':
         DepartementLayer.setVisible(false);
         break;
+      case 'cesbio':
+        CesbioLayer.setVisible(false);
+        break;
     }
 });
 
 var table = [];
 var tableheader = [];
-var json = [];
 
 function loadJSON(num, q, title) {
+  json = new Array();
   $.getJSON(q, function (result) {
     var str = "[";
     var heads = result['head']['vars'];
@@ -176,10 +183,11 @@ function loadJSON(num, q, title) {
       height: "250px"
 
     });
-    table.push(t);
-    tableheader.push(th);
-    json.push(str);
-    let html = "<h3>" + title + '</h3><div class="submenu"><button type="button"  onclick="downloadCSV(' + num + ')" class="btn btn-success">Export CSV</button><button type="button" class="btn btn-success" data-toggle="modal" data-target="#querydialog" data-query="' + num + '">Open query</button><button type="button" class="btn btn-success" data-toggle="modal" data-target="#ontology" data-onto="' + num + '">View ontology</button></div>';
+    table[num]=t;;
+    tableheader[num]=th;
+    json[num] = JSON.parse(str);
+    let html = "<h3>" + title + '</h3><div class="submenu"><button type="button"  onclick="downloadCSV(' + num + ')" class="btn btn-success">Export CSV</button></div>';
+    //<button type="button" class="btn btn-success" data-toggle="modal" data-target="#querydialog" data-query="' + num + '">Open query</button><button type="button" class="btn btn-success" data-toggle="modal" data-target="#ontology" data-onto="' + num + '">View ontology</button>
     $("#title" + num).html(html);
   });
 }
@@ -197,6 +205,150 @@ function findGetParameter(parameterName) {
   return result;
 }
 
+
+var chartdata = { labels: [], datasets: [] };
+var graphloaded = false;
+function loadGraph() {
+  if (graphloaded) return;
+  graphloaded = true;
+  var ctx = $("#meteochart")[0].getContext('2d');
+  var myChart = new Chart(ctx, {
+    type: 'line',
+    data: chartdata,
+    options: {
+      scales: {
+        yAxes: [{
+          id: 'A',
+          type: 'linear',
+          position: 'left',
+        }, {
+          id: 'B',
+          type: 'linear',
+          position: 'right',
+          ticks: {
+            max: 100,
+            min: 0
+          }
+        }],
+        xAxes: [{
+          type: 'time',
+          distribution: 'series',
+          time: {
+            unit: 'day'
+          },
+          ticks: {
+            source: 'data',
+            autoSkip: true
+          }
+        }],
+
+      }
+    }
+  });
+
+  $.each(mesures, function (idx, mesure) {
+    let filtered = json[3].filter(function (item) {
+      return item.procedure === "http://melodi.irit.fr/lod/mfo/procedure_" + mesure['uri'];
+    });
+
+    let chartlb = $(filtered).map(function () {
+      return this['dti'].substr(0, 10);
+    }).get()
+
+
+    let chartval = $(filtered).map(function () {
+      return this['value'];
+    }).get()
+
+    if (chartdata.labels === undefined || chartdata.labels.length == 0)
+      chartdata.labels = chartlb;
+    chartdata.datasets.push({
+      data: chartval,
+      label: mesure['name'],
+      yAxisID: 'A',
+      hidden: true,
+      fill: false,
+      pointRadius: 2,
+      lineTension: 0.5,
+      borderWidth: 2,
+      borderColor: mesure['color']
+    });
+  });
+
+  let obsList = [];
+  let obsData = [];
+
+  for (i = 0; i < chartdata.labels.length; i++) {
+    let imgsrc = '';
+    for (j = 0; j < json[1].length; j++)
+      if (chartdata.labels[i] === json[1][j]['dti'].substr(0, 10))
+        imgsrc = json[1][j]['quicklook'];
+    if (imgsrc === '') {
+      obsList.push("");
+      obsData.push(null);
+    }
+    else {
+      let img = new Image(64, 64);
+      img.src = imgsrc;
+      obsList.push(img);
+      obsData.push(0);
+    }
+  }
+
+  chartdata.datasets.push({
+    data: obsData,
+    label: 'S2',
+    yAxisID: 'B',
+    pointStyle: obsList
+  });
+
+
+  for (i = 0; i < chartdata.labels.length; i++) {
+    let imgsrc = '';
+    for (j = 0; j < json[4].length; j++)
+      if (chartdata.labels[i] === json[1][j]['dti'].substr(0, 10))
+        imgsrc = json[1][j]['quicklook'];
+    if (imgsrc === '') {
+      obsList.push("");
+      obsData.push(null);
+    }
+    else {
+      let img = new Image(48, 48);
+      img.src = imgsrc;
+      obsList.push(img);
+      obsData.push(0);
+    }
+  }
+
+
+  $.each(changes, function (idx, change) {
+    let filtered = json[4].filter(function (item) {
+      return item.type === change['uri'];
+    });
+    // alert(filtered.length)
+
+    let changeval = new Array(chartdata.labels.length).fill(null);
+    $.each(filtered, function (i, row) {
+      for (j = 0; j < chartdata.labels.length; j++)
+        if (chartdata.labels[j] >= row['dti1'].substr(0, 10) && chartdata.labels[j] <= row['dti2'].substr(0, 10))
+          changeval[j] = row['percentage'];
+    });
+
+
+    chartdata.datasets.push({
+      data: changeval,
+      label: change['name'],
+      yAxisID: 'B',
+      fill: false,
+      pointRadius: 3,
+      borderWidth: 3,
+      borderColor: change['color']
+    });
+  });
+
+  myChart.update();
+  $("#meteochart").height("800px");
+}
 //var spatialfilter = "";
 //var tempofilter = "";
 var prefixesToQuery = "";
@@ -251,7 +403,7 @@ $('#btnSearch').click(function () {
   query = query.replace('intervalfilter', intervalfilter);
   query = query.replace('spatialfilter', spatialfilter);
   query = query.replace('instantfilter', instantfilter);
-  alert(query);
+  //alert(query);
   query = prefixesToQuery + query;
   link = host + queryGeoJSON + encodeURIComponent(query);
   var format = new ol.format.GeoJSON();
@@ -278,40 +430,10 @@ $('#btnSearch').click(function () {
       zoom: 11 //here you define the levelof zoom
     }));
     clickToShow = true;
-
-    /* 
-                    $.each(result['results']['bindings'], function (index, value) {
-                        name = value['name']['value'];
-                        wkt = value['wkt']['value'];
-                        uri = value['uri']['value'];
-                        let f = format.readFeature(value['wkt']['value'], {
-                            dataProjection: 'EPSG:4326',
-                            featureProjection: 'EPSG:3857'
-                        });
-    
-                        f.set('name', name);
-                        f.set('uri', uri);
-                        f.setId(name);
-                        //f.setStyle(getStyle(item.Heading, item.Length, item.Type));
-                        FeatureVectorSource.addFeature(f);
-    
-                    }); */
   });
 
 
 
-
-  /* for (i = 0; i < queriesDOC.length; i++) {
-      if (i === 0 && !$('#cboxgeo').prop('checked')) continue;
-      let query = queries[i]['query'];
-      query = query.replace('tempofilter', tempofilter);
-      query = query.replace('intervalfilter', intervalfilter);
-      query = query.replace('spatialfilter', spatialfilter);
-      currentQueries.push({ "query": query, "title": queries[i]['title'] });
-      query = prefixesToQuery + query;
-      link = host + queryJSON + encodeURIComponent(query);
-      loadJSON(i, link, queries[i]['title']);
-  } */
 
 });
 
@@ -326,47 +448,6 @@ function loadFeatureLookup() {
     });
   });
 }
-
-function loadGeoJSON(q, name) {
-  var table = "<table id='list' class='w3-table-all w3-hoverable' title='Click on a hyperlink to browse, click on a row to view objet'><thead><tr class='w3-blue'>";
-  RSVectorSource.clear();
-  $.getJSON(q, function (data) {
-    if (data.features.length === 0)
-      return;
-    str = ''
-    let n = 1;
-    //let fea = new ol.format.GeoJSON().readFeatures(data, {
-    //    dataProjection: 'EPSG:4326',
-    //    featureProjection: 'EPSG:3857'
-    // });
-    $.each(data.features[0].properties, function (name, da) {
-      if (name !== 'ID')
-        table = table + "<th>" + name + "</th>";
-    });
-    table = table + '</tr></thead>';
-
-    $.each(data.features, function (key, val) {
-      rs.push(val.geometry);
-      str = str + '<tr>';
-      $.each(val.properties, function (i, j) {
-        if (j.toString().indexOf('http') !== -1)
-          str = str + '<td><a href="#">' + j + '</a></td>';
-        else
-          str = str + '<td>' + j + '</td>';
-        //f.set(j, i);
-      });
-      //f.setId(n);
-      //f.setStyle(getStyle(item.Heading, item.Length, item.Type));
-      //  RSVectorSource.addFeatures(fea);
-      //listnames.push(value['name']['value'] + ' (departement)');
-      n = n + 1;
-      str = str + '</tr>';
-    });
-    table = table + str + "</tbody></table>";
-    $('#list').append("<h4> " + name + "</h4><div class='result'>" + table + "<div>");
-  });
-}
-
 
 
 function downloadCSV(idx) {
@@ -553,7 +634,7 @@ $(document).ready(function () {
 
 
 
-
+  $('#graphic').hide();
 });
 
 $('li').on('click', function (e) {
@@ -561,8 +642,16 @@ $('li').on('click', function (e) {
   var $a = $(this).children('a');
   if ($a.attr('href') === 'toogle')
     toogle();
-  if ($a.attr('href') === 'vineyard')
-    window.location = window.location.replace("index.jsp", "index.jsp?sdate=2017-04-01&edate=2017-05-01&geom=POLYGON((-0.5361%2045.2022,1.1338%2045.1402,0.9756%2044.0386,-0.6768%2044.0386,-0.5361%2045.2022))#");
+  if ($a.attr('href') === 'vineyard') {
+    let link = "";
+    if (location.origin.indexOf("https") >= 0)
+      link = window.location.origin + "/index.jsp?sdate=2017-04-01&edate=2017-05-01&geom=POLYGON((-0.5361%2045.2022,1.1338%2045.1402,0.9756%2044.0386,-0.6768%2044.0386,-0.5361%2045.2022))";
+    else
+      link = window.location.origin + "/index.jsp?sdate=2017-04-01&edate=2017-05-01&geom=POLYGON((-0.5361%2045.2022,1.1338%2045.1402,0.9756%2044.0386,-0.6768%2044.0386,-0.5361%2045.2022))";
+
+    window.location = link;
+  }
+
 
 });
 
@@ -623,34 +712,53 @@ function loadInfo(num, q, title) {
       height: "250px"
 
     });
-    table.push(t);
-    tableheader.push(th);
-    json.push(str);
-    let html = "<h3>" + title + '</h3><div class="submenu"><button type="button"  onclick="downloadCSV(' + num + ')" class="btn btn-success">Export CSV</button><button type="button" class="btn btn-success" data-toggle="modal" data-target="#querydialog" data-query="' + num + '">Open query</button><button type="button" class="btn btn-success" data-toggle="modal" data-target="#ontology" data-onto="' + num + '">View ontology</button></div>';
+    table[num]=t;;
+    tableheader[num]=th;
+   
+    json[num] = JSON.parse(str);
+    let html = "<h3>" + title + '</h3><div class="submenu"><button type="button"  onclick="downloadCSV(' + num + ')" class="btn btn-success">Export CSV</button></div>';
+    //<button type="button" class="btn btn-success" data-toggle="modal" data-target="#querydialog" data-query="' + num + '">Open query</button><button type="button" class="btn btn-success" data-toggle="modal" data-target="#ontology" data-onto="' + num + '">View ontology</button>
     $("#title" + num).html(html);
-
-
-    /*    var heads = result['head']['vars'];
-       var data = result['results']['bindings'];
-       var th = [];
-       $.each(heads, function (index2, col) {
-           th.push({ "title": col, "field": col });
-       });
-       $.each(data, function (index, row) {
- 
-           $.each(heads, function (index2, col) {
-               str = str + '"' + col + '":"' + row[col]['value'] + '",';
-           });
-           str = str.replace(/,\s*$/, "");
-           str = str + "<br/>";
-       });
-       alert(str);
-       $("#title" + num).html("<h3>" + title + '</h3>');
-       $("#list" + num).html(str);
-       return str; */
-
   });
 }
+
+
+
+
+
+$('#btnGraphic').click(function () {
+
+  /* $("#list1").html('<div id="EOImages" class="carousel slide" data-ride="carousel"> <ol class="carousel-indicators"></ol><div class="carousel-inner"></div>  <a class="left carousel-control" href="#EOImages" data-slide="prev">  <span class="glyphicon glyphicon-chevron-left"></span>  <span class="sr-only">Previous</span></a><a class="right carousel-control" href="#EOImages" data-slide="next">  <span class="glyphicon glyphicon-chevron-right"></span>  <span class="sr-only">Next</span></a> </div>');
+
+  for (i = 0; i < json[1].length; i++) {
+    $('<div class="item"><img src="' + json[1][i]['quicklook'] + '"><div class="carousel-caption"><h5>' + json[1][i]['tile'].substr(json[1][i]['tile'].length - 4) + '</h5><p>' + json[1][i]['dti'] + " - Cloud cover: " + json[1][i]['cloudCover'] + '</p></div> </div>').appendTo('.carousel-inner');
+    $('<li data-target="#EOImages" data-slide-to="' + i + '"></li>').appendTo('.carousel-indicators');
+
+  }
+
+  $("#list1").removeClass('tabulator');
+  $("#list1").css('height', '');
+  $("#list3").removeClass('tabulator');
+  $("#list3").css('height', '');
+  $('.item').first().addClass('active');
+  $('.carousel-indicators > li').first().addClass('active');
+  $('#EOImages').carousel(); */
+
+  if ($('#btnGraphic').html() == "Graphical mode") {
+    $('#list').hide();
+    $('#graphic').show();
+    $('#btnGraphic').html("Tabular mode");
+    loadGraph();
+  }
+  else {
+    $('#list').show();
+    $('#graphic').hide();
+    $('#btnGraphic').html("Graphical mode");
+  }
+
+});
+
+
 
 
 function viewFeature(uri) {
@@ -691,7 +799,7 @@ function viewFeature(uri) {
     query = query.replace('instantfilter', instantfilter);
     query = query.replace('spatialfilterDoc', spatialfilterDoc);
     query = query.replace('?featurefilterDoc', featureURI);
-    alert(query);
+    //</div>alert(query);
     query = prefixesToQuery + query;
     link = host + queryJSON + encodeURIComponent(query);
     loadInfo(i, link, queriesDoc[i]['title']);

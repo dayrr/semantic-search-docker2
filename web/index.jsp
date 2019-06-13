@@ -244,9 +244,9 @@
         </div>
     </div>
 
-    <script src="map.js"></script>
-    <script src="ep.js"></script>
-    <script src="main.js"></script>
+    <script src="./map.js"></script>
+    <script src="./ep.js"></script>
+    <script src="./main.js"></script>
 </body>
 
 </html>

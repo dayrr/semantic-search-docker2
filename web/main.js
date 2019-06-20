@@ -716,9 +716,9 @@ $('li').on('click', function (e) {
   if ($a.attr('href') === 'vineyard') {
     let link = "";
     if (location.origin.indexOf("https") >= 0)
-      link = window.location.origin + "/index.jsp?sdate=2017-04-01&edate=2017-05-01&geom=POLYGON((-0.5361%2045.2022,1.1338%2045.1402,0.9756%2044.0386,-0.6768%2044.0386,-0.5361%2045.2022))";
+      link = window.location.origin + "/semsearch/index.jsp?sdate=2017-04-01&edate=2017-05-01&geom=POLYGON((-0.5361%2045.2022,1.1338%2045.1402,0.9756%2044.0386,-0.6768%2044.0386,-0.5361%2045.2022))";
     else
-      link = window.location.origin + "/index.jsp?sdate=2017-04-01&edate=2017-05-01&geom=POLYGON((-0.5361%2045.2022,1.1338%2045.1402,0.9756%2044.0386,-0.6768%2044.0386,-0.5361%2045.2022))";
+      link = window.location.origin + "/semsearch/index.jsp?sdate=2017-04-01&edate=2017-05-01&geom=POLYGON((-0.5361%2045.2022,1.1338%2045.1402,0.9756%2044.0386,-0.6768%2044.0386,-0.5361%2045.2022))";
 
     window.location = link;
   }

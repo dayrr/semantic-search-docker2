@@ -133,6 +133,40 @@ $('#layers input:checkbox').click(function () {
       case 'cesbio':
         CesbioLayer.setVisible(true);
         break;
+      case 'cadastre':
+        IGNCadastreLayer.setVisible(true);
+        break;
+      case 'clc2018':
+        CLC2018.setVisible(true);
+        break;
+
+
+      case 'clc2012':
+        CLC2012.setVisible(true);
+        break;
+
+      case 'rpg2016':
+        IGNRPG2016.setVisible(true);
+        break;
+      case 'rpg2017':
+        IGNRPG2017.setVisible(true);
+        break;
+      case 'veg':
+        IGNVegetationLayer.setVisible(true);
+        break;
+
+      case 'vit':
+        ViticultureLayer.setVisible(true);
+        break;
+
+
+
+      case 'spot2017':
+        SPOT2017.setVisible(true);
+        break;
+      case 'spot2018':
+        SPOT2018.setVisible(true);
+        break;
     }
   else
     switch ($(this).val()) {
@@ -151,8 +185,45 @@ $('#layers input:checkbox').click(function () {
       case 'cesbio':
         CesbioLayer.setVisible(false);
         break;
+      case 'cadastre':
+        IGNCadastreLayer.setVisible(false);
+        break;
+      case 'clc2018':
+        CLC2018.setVisible(false);
+        break;
+
+
+
+      case 'clc2012':
+        CLC2012.setVisible(false);
+        break;
+
+      case 'vit':
+        ViticultureLayer.setVisible(false);
+        break;
+      case 'spot2018':
+        SPOT2018.setVisible(false);
+        break;
+
+
+
+      case 'spot2017':
+        SPOT2017.setVisible(false);
+        break;
+
+      case 'rpg2016':
+        IGNRPG2016.setVisible(false);
+        break;
+      case 'rpg2017':
+        IGNRPG2017.setVisible(false);
+        break;
+      case 'veg':
+        IGNVegetationLayer.setVisible(false);
+        break;
     }
 });
+
+
 
 var table = [];
 var tableheader = [];
@@ -183,8 +254,8 @@ function loadJSON(num, q, title) {
       height: "250px"
 
     });
-    table[num]=t;;
-    tableheader[num]=th;
+    table[num] = t;;
+    tableheader[num] = th;
     json[num] = JSON.parse(str);
     let html = "<h3>" + title + '</h3><div class="submenu"><button type="button"  onclick="downloadCSV(' + num + ')" class="btn btn-success">Export CSV</button></div>';
     //<button type="button" class="btn btn-success" data-toggle="modal" data-target="#querydialog" data-query="' + num + '">Open query</button><button type="button" class="btn btn-success" data-toggle="modal" data-target="#ontology" data-onto="' + num + '">View ontology</button>
@@ -692,6 +763,11 @@ function loadInfo(num, q, title) {
     var str = "[";
     var heads = result['head']['vars'];
     var data = result['results']['bindings'];
+ //   if(data === undefined || data.length == 0) {
+ //     json[num] = JSON.parse("");
+ //     return;
+ //   }
+    
     var th = [];
     $.each(heads, function (index2, col) {
       th.push({ "title": col, "field": col });
@@ -699,6 +775,7 @@ function loadInfo(num, q, title) {
     $.each(data, function (index, row) {
       str = str + "{";
       $.each(heads, function (index2, col) {
+       
         str = str + '"' + col + '":"' + row[col]['value'] + '",';
       });
       str = str.replace(/,\s*$/, "");
@@ -712,9 +789,9 @@ function loadInfo(num, q, title) {
       height: "250px"
 
     });
-    table[num]=t;;
-    tableheader[num]=th;
-   
+    table[num] = t;;
+    tableheader[num] = th;
+
     json[num] = JSON.parse(str);
     let html = "<h3>" + title + '</h3><div class="submenu"><button type="button"  onclick="downloadCSV(' + num + ')" class="btn btn-success">Export CSV</button></div>';
     //<button type="button" class="btn btn-success" data-toggle="modal" data-target="#querydialog" data-query="' + num + '">Open query</button><button type="button" class="btn btn-success" data-toggle="modal" data-target="#ontology" data-onto="' + num + '">View ontology</button>

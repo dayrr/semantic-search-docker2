@@ -13,10 +13,10 @@
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.bundle.js"></script>
     <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
-    <script src="/semsearch/data.js"></script>
-    <script src="/semsearch/jquery.easy-autocomplete.min.js"></script>
-    <link href="/semsearch/semsearch.css" rel="stylesheet">
-    <link href="/semsearch/easy-autocomplete.min.css" rel="stylesheet">
+    <script src="data.js"></script>
+    <script src="jquery.easy-autocomplete.min.js"></script>
+    <link href="semsearch.css" rel="stylesheet">
+    <link href="easy-autocomplete.min.css" rel="stylesheet">
     <title>Semantic search</title>
 </head>
 
@@ -66,7 +66,7 @@
             <div class="col-md-4">
                 <div class="panel panel-default">
                     <div class="panel-heading">
-                        <input type="checkbox" id="cboxdatetime"> <span class="glyphicon glyphicon-calendar"></span>
+                        <input type="checkbox" checked="checked" id="cboxdatetime"> <span class="glyphicon glyphicon-calendar"></span>
                         Date time</div>
                     <div class="panel-body"> From <input type="date" id="dtstart" value="2017-04-01" min="2016-01-01"
                             max="2018-12-31">
@@ -151,9 +151,18 @@
                     </div>
 
                     <div id='layers'>
+                        <input type="checkbox" name='layer' value='cadastre'> Cadastre<br>
+                        <input type="checkbox" name='layer' value='clc2012'> CLC 2012<br>
+                        <input type="checkbox" name='layer' value='clc2018'> CLC 2018<br>
+                         <input type="checkbox" name='layer' value='rpg2016'> RPG 2016<br>
+                        <input type="checkbox" name='layer' value='rpg2017'> RPG 2017<br>
+                        <input type="checkbox" name='layer' value='spot2017'> SPOT 2017<br>
+                        <input type="checkbox" name='layer' value='spot2018'> SPOT 2018<br>
+                        <input type="checkbox" name='layer' value='vit'> Viticulture<br>
+                        <input type="checkbox" name='layer' value='veg'>Vegetation<br>
                         <input type="checkbox" name='layer' value='cesbio'> Cesbio LC 2014<br>
-                        <input type="checkbox" name='layer' value='tile'> Tile <br>
-                        <input type="checkbox" name='layer' value='station'> Station <br>
+                        <input type="checkbox" name='layer' value='tile'> Sentinel tile <br>
+                        <input type="checkbox" name='layer' value='station'> Meteo Station <br>
                         <input type="checkbox" name='layer' value='region'> Region <br>
                         <input type="checkbox" name='layer' value='departement'> Departement <br>
 
@@ -244,9 +253,9 @@
         </div>
     </div>
 
-    <script src="/semsearch/map.js"></script>
-    <script src="/semsearch/ep.js"></script>
-    <script src="/semsearch/main.js"></script>
+    <script src="map.js"></script>
+    <script src="ep.js"></script>
+    <script src="main.js"></script>
 </body>
 
 </html>

@@ -195,7 +195,7 @@ DrawLayer = new ol.layer.Vector({
 
 CesbioLayer = new ol.layer.Tile({
     title: '2014 Stratification 4 urban classes',
-    visible: true,
+    visible: false,
     source: new ol.source.TileWMS({
         url: 'http://cyan.ups-tlse.fr:8080/geoserver/Theia_OSO/wms?',
         serverType: 'geoserver',
@@ -203,7 +203,113 @@ CesbioLayer = new ol.layer.Tile({
     })
 })
 
+
+IGNCadastreLayer = new ol.layer.Tile({
+    title: 'Parcelles cadastrales IGN OK',
+    visible: false,
+    source: new ol.source.TileWMS({
+        url: 'http://wxs.ign.fr/4i3ybkskcwog7hzyfw32fbub/geoportail/r/wms?',
+        params: { 'LAYERS': 'CADASTRALPARCELS.PARCELS', 'TILED': true, 'style':'bdparcellaire' }
+    })
+})
+
+ViticultureLayer= new ol.layer.Tile({
+    title: 'Viticulture',
+    visible: false,
+    source: new ol.source.TileWMS({
+        url: 'http://wxs.ign.fr/4i3ybkskcwog7hzyfw32fbub/geoportail/r/wms?',
+        params: { 'LAYERS': 'Aire-Parcellaire', 'TILED': true }
+    })
+})
+
+IGNVegetationLayer= new ol.layer.Tile({
+    title: 'Vegetation IGN OK',
+    visible: false,
+    source: new ol.source.TileWMS({
+        url: 'http://wxs.ign.fr/4i3ybkskcwog7hzyfw32fbub/geoportail/v/wms?',
+        params: { 'LAYERS': 'BDTOPO-GEOPO-VEGETATION_WLD_WGS84G', 'TILED': true }
+    })
+})
+
+SPOT2017= new ol.layer.Tile({
+    title: 'Vegetation IGN OK',
+    visible: false,
+    source: new ol.source.TileWMS({
+        url: 'http://wxs.ign.fr/4i3ybkskcwog7hzyfw32fbub/geoportail/r/wms?',
+        params: { 'LAYERS': 'ORTHOIMAGERY.ORTHOPHOTOS.ORTHO-EXPRESS.2017', 'TILED': true }
+    })
+})
+
+SPOT2018= new ol.layer.Tile({
+    title: 'Vegetation IGN OK',
+    visible: false,
+    source: new ol.source.TileWMS({
+        url: 'http://wxs.ign.fr/4i3ybkskcwog7hzyfw32fbub/geoportail/r/wms?',
+        params: { 'LAYERS': 'ORTHOIMAGERY.ORTHOPHOTOS.ORTHO-EXPRESS.2018', 'TILED': true }
+    })
+})
+
+
+
+
+
+
+IGNRPG2016 = new ol.layer.Tile({
+    title: 'RPG IGN 2016 OK',
+    visible: false,
+    source: new ol.source.TileWMS({
+        url: 'http://wxs.ign.fr/4i3ybkskcwog7hzyfw32fbub/geoportail/r/wms?',
+        params: { 'LAYERS': 'LANDUSE.AGRICULTURE2016', 'TILED': true }
+    })
+})
+
+IGNRPG2017 = new ol.layer.Tile({
+    title: 'RPG IGN 2017 OK',
+    visible: false,
+    source: new ol.source.TileWMS({
+        url: 'http://wxs.ign.fr/4i3ybkskcwog7hzyfw32fbub/geoportail/r/wms?',
+        params: { 'LAYERS': 'LANDUSE.AGRICULTURE2017', 'TILED': true }
+    })
+})
+
+
+CLC2018 = new ol.layer.Tile({
+    title: 'Corine LC 2018',
+    visible: false,
+    source: new ol.source.TileWMS({
+        url: 'https://wxs.ign.fr/corinelandcover/geoportail/r/wms?',
+        params: { 'LAYERS': 'LANDCOVER.CLC18_FR', 'TILED': true}
+    })
+})
+
+CLC2012 = new ol.layer.Tile({
+    title: 'Corine LC 2012R',
+    visible: false,
+    source: new ol.source.TileWMS({
+        url: 'https://wxs.ign.fr/corinelandcover/geoportail/r/wms?',
+        params: { 'LAYERS': 'LANDCOVER.CLC12R_FR', 'TILED': true}
+    })
+})
+
+//viticol:AOC-VITICOLES:aire_parcellaire
+//	CADASTRALPARCELS.PARCELLAIRE_EXPRESS:parcelle
+//RPG.2017:parcelles_graphiques
+//RPG.2017:ilots_anonymes
+//RPG.2016:parcelles_graphiques
+
+
+
+
+mapDraw.addLayer(SPOT2017);
+mapDraw.addLayer(SPOT2018);
+mapDraw.addLayer(ViticultureLayer);
 mapDraw.addLayer(TileLayer);
+mapDraw.addLayer(CLC2018);
+mapDraw.addLayer(CLC2012);
+mapDraw.addLayer(IGNRPG2016);
+mapDraw.addLayer(IGNRPG2017);
+mapDraw.addLayer(IGNVegetationLayer);
+mapDraw.addLayer(IGNCadastreLayer);
 mapDraw.addLayer(StationLayer);
 mapDraw.addLayer(RegionLayer);
 mapDraw.addLayer(DepartementLayer);
@@ -212,13 +318,54 @@ mapDraw.addLayer(DrawLayer);
 mapDraw.addLayer(FeatureLayer);
 mapDraw.addLayer(vector);
 mapDraw.addLayer(CesbioLayer);
+
+
+
+
 TileLayer.setVisible(false);
 StationLayer.setVisible(false);
 RegionLayer.setVisible(false);
 DepartementLayer.setVisible(false);
 CesbioLayer.setVisible(false);
 CesbioLayer.setZIndex(0);
-CesbioLayer.setOpacity(0.2);
+CesbioLayer.setOpacity(0.3);
+CLC2018.setVisible(false);
+CLC2018.setZIndex(0);
+CLC2018.setOpacity(0.3);
+CLC2012.setVisible(false);
+CLC2012.setZIndex(0);
+CLC2012.setOpacity(0.3);
+IGNCadastreLayer.setVisible(false);
+IGNCadastreLayer.setOpacity(0.4);
+
+IGNRPG2016.setVisible(false);
+IGNRPG2016.setZIndex(0);
+IGNRPG2016.setOpacity(0.3);
+
+SPOT2017.setVisible(false);
+SPOT2017.setZIndex(0);
+SPOT2017.setOpacity(0.3);
+
+
+SPOT2018.setVisible(false);
+SPOT2018.setZIndex(0);
+SPOT2018.setOpacity(0.3);
+
+ViticultureLayer.setVisible(false);
+ViticultureLayer.setZIndex(0);
+ViticultureLayer.setOpacity(0.3);
+
+
+IGNRPG2017.setVisible(false);
+IGNRPG2017.setZIndex(0);
+IGNRPG2017.setOpacity(0.3);
+
+IGNVegetationLayer.setVisible(false);
+IGNVegetationLayer.setZIndex(0);
+IGNVegetationLayer.setOpacity(0.3);
+
+
+
 
 
 mapDraw.on('singleclick', function (evt) {

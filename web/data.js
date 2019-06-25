@@ -193,37 +193,13 @@ var prefixes = [{
     "prefix": "mfo",
     "uri": "http://melodi.irit.fr/ontologies/mfo.owl#"
 },
-
-{
-    "prefix": "l-mfo",
-    "uri": "http://melodi.irit.fr/lod/mfo/"
-},
-
-{
-    "prefix": "qudt-1-1",
-    "uri": "http://qudt.org/1.1/schema/qudt#"
-},
-
-{
-    "prefix": "qudt-unit-1-1",
-    "uri": "http://qudt.org/1.1/vocab/unit#"
-},
-
+                
 {
     "prefix": "vy",
     "uri": "http://melodi.irit.fr/ontologies/vineyard.owl#"
 },
 
 
-{
-    "prefix": "l-vy",
-    "uri": "http://melodi.irit.fr/lod/vineyard/"
-},
-
-{
-    "prefix": "l-admin",
-    "uri": "http://melodi.irit.fr/lod/administrativeUnit/"
-},
 
 {
     "prefix": "geo",
@@ -241,15 +217,7 @@ var prefixes = [{
     "uri": "http://melodi.irit.fr/ontologies/ndvi.owl#"
 },
 
-{
-    "prefix": "g-ndvi",
-    "uri": "http://melodi.irit.fr/lod/ndvi/"
-},
 
-{
-    "prefix": "l-grid",
-    "uri": "http://melodi.irit.fr/lod/grid/"
-},
 {
     "prefix": "grid",
     "uri": "http://melodi.irit.fr/ontologies/grid.owl#"
@@ -276,14 +244,6 @@ var prefixes = [{
     "uri": "http://melodi.irit.fr/ontologies/eventMeteo.owl#"
 },
 {
-    "prefix": "l-meteo-evt",
-    "uri": "http://melodi.irit.fr/lod/eventMeteo/"
-},
-{
-    "prefix": "l-change",
-    "uri": "http://melodi.irit.fr/lod/change/"
-},
-{
     "prefix": "change",
     "uri": "http://melodi.irit.fr/ontologies/change.owl#"
 },
@@ -298,10 +258,6 @@ var prefixes = [{
 {
     "prefix": "owl",
     "uri": "http://www.w3.org/2002/07/owl#"
-},
-{
-    "prefix": "prov",
-    "uri": "http://www.w3.org/ns/prov-o#"
 }
 
 ];

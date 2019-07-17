@@ -17,11 +17,10 @@
         href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-treeview/1.2.0/bootstrap-treeview.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-treeview/1.2.0/bootstrap-treeview.min.js"></script>
 
-    <script src="data.js"></script>
-    <script src="jquery.easy-autocomplete.min.js"></script>
-    <script src="jquery.easy-autocomplete.min.js"></script>
-    <link href="semsearch.css" rel="stylesheet">
-    <link href="easy-autocomplete.min.css" rel="stylesheet">
+    <script src="/semsearch/data.js"></script>
+    <script src="/semsearch/jquery.easy-autocomplete.min.js"></script>
+    <link href="/semsearch/semsearch.css" rel="stylesheet">
+    <link href="/semsearch/easy-autocomplete.min.css" rel="stylesheet">
     <title>Semantic search</title>
 </head>
 
@@ -112,9 +111,9 @@
         </div>
     </div>
 
-    <script src="map.js"></script>
-    <script src="ep.js"></script>
-    <script src="main.js"></script>
+    <script src="/semsearch/map.js"></script>
+    <script src="/semsearch/ep.js"></script>
+    <script src="/semsearch/main.js"></script>
 </body>
 
 </html>

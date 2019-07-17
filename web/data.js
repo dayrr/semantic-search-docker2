@@ -1,3 +1,65 @@
+var WMSServices = [{
+    "name":"Cesbio2014",
+    "url":"http://cyan.ups-tlse.fr:8080/geoserver/Theia_OSO/wms?",
+    "layers":"Theia_OSO:Classif_France2014_refV3v7_regionClimat_ColorIndexed_4urban"
+},
+{
+    "name":"Cadastral",
+    "url":"http://wxs.ign.fr/4i3ybkskcwog7hzyfw32fbub/geoportail/r/wms?",
+    "layers":"CADASTRALPARCELS.PARCELS"
+},
+{
+    "name":"Viticulture",
+    "url":"http://wxs.ign.fr/4i3ybkskcwog7hzyfw32fbub/geoportail/r/wms?",
+    "layers":"Aire-Parcellaire"
+},
+
+{
+    "name":"Vegetation",
+    "url":"http://wxs.ign.fr/4i3ybkskcwog7hzyfw32fbub/geoportail/v/wms?",
+    "layers":"BDTOPO-GEOPO-VEGETATION_WLD_WGS84G"
+},
+{
+    "name":"SPOT2017",
+    "url":"http://wxs.ign.fr/4i3ybkskcwog7hzyfw32fbub/geoportail/r/wms?",
+    "layers":"ORTHOIMAGERY.ORTHOPHOTOS.ORTHO-EXPRESS.2017"
+},
+{
+    "name":"SPOT2018",
+    "url":"http://wxs.ign.fr/4i3ybkskcwog7hzyfw32fbub/geoportail/r/wms?",
+    "layers":"ORTHOIMAGERY.ORTHOPHOTOS.ORTHO-EXPRESS.2018"
+},
+
+{
+    "name":"RPG2016",
+    "url":"http://wxs.ign.fr/4i3ybkskcwog7hzyfw32fbub/geoportail/r/wms?",
+    "layers":"LANDUSE.AGRICULTURE2016"
+},
+
+
+{
+    "name":"RPG2017",
+    "url":"http://wxs.ign.fr/4i3ybkskcwog7hzyfw32fbub/geoportail/r/wms?",
+    "layers":"LANDUSE.AGRICULTURE2017"
+},
+
+{
+    "name":"CorineLC2018",
+    "url":"https://wxs.ign.fr/corinelandcover/geoportail/r/wms?",
+    "layers":"LANDCOVER.CLC18_FR"
+},
+
+{
+    "name":"CorineLC2012R",
+    "url":"https://wxs.ign.fr/corinelandcover/geoportail/r/wms?",
+    "layers":"LANDCOVER.CLC18_FR"
+},
+];
+
+
+
+
+
 var changes = [
     {
         "name": "No change (%)",
@@ -19,7 +81,55 @@ var changes = [
         "uri": "http://melodi.irit.fr/ontologies/change.owl#HighChange",
         "color": "#3cb44b"
     }
-]
+];
+var ndvis = [
+    {
+        "name": "Low vegetation",
+        "uri": "http://melodi.irit.fr/ontologies/ndvi.owl#LowVegetation",
+        "color": "#4363d8"
+    },
+    {
+        "name": "Middle vegetation",
+        "uri": "http://melodi.irit.fr/ontologies/ndvi.owl#MidVegetation",
+        "color": "#f58231"
+    },
+    {
+        "name": "High vegetation",
+        "uri": "http://melodi.irit.fr/ontologies/ndvi.owl#HighVegetation",
+        "color": "#3cb44b"
+    }
+];
+
+var damages = [
+    {
+        "name": "No damage (%)",
+        "uri": "http://melodi.irit.fr/ontologies/vineyard.owl#None",
+        "color": "#ffe119"
+    },
+    {
+        "name": "Low damage (%)",
+        "uri": "http://melodi.irit.fr/ontologies/vineyard.owl#Low",
+
+        "color": "#4363d8"
+    },
+    {
+        "name": "Middle damage (%)",
+        "uri": "http://melodi.irit.fr/ontologies/vineyard.owl#Mid",
+        "color": "#f58231"
+    },
+    {
+        "name": "High damage (%)",
+        "uri": "http://melodi.irit.fr/ontologies/vineyard.owl#High",
+        "color": "#3cb44b"
+    }
+    ,
+    {
+        "name": "Very high damage (%)",
+        "uri": "http://melodi.irit.fr/ontologies/vineyard.owl#VeryHigh",
+        "color": "#8cb49b"
+    }
+];
+
 var mesures = [
     {
         "name": "Atmospheric Pressure (Pa)",
@@ -83,12 +193,7 @@ var mesures = [
         "uri": "tminsol",
         "color": "purple"
     },
-
-
 ]
-
-
-
 
 var featureQueries =
 {
@@ -100,84 +205,6 @@ var featureQueries =
         + "?uri a oau:Commune . "
         + "?uri oau:hasName ?name.}"
 }
-
-
-var featureQueries2 =
-{
-    "station":
-        "prefix mfo: <http://melodi.irit.fr/ontologies/mfo.owl#>"
-        + "prefix geo: <http://www.opengis.net/ont/geosparql#>  "
-        + "prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> "
-        + "select ?name where "
-        + "{ ?s a mfo:MeteoStation. "
-        + "?s rdfs:label  ?name . "
-        + "}",
-    "tile":
-        "prefix mfo:<http://melodi.irit.fr/ontologies/mfo.owl#> "
-        + "prefix geo:<http://www.opengis.net/ont/geosparql#> "
-        + "prefix grid:<http://melodi.irit.fr/ontologies/grid.owl#> "
-        + "select ?name where "
-        + "{"
-        + "?s a grid:Tile. "
-        + "?s grid:id ?name."
-        + "}",
-    "region":
-        "prefix oau: <http://melodi.irit.fr/ontologies/administrativeUnits.owl#> "
-        + "prefix geo: <http://www.opengis.net/ont/geosparql#> "
-        + "select ?name where { "
-        + "?u a oau:Region . "
-        + "?u oau:hasName ?name. }",
-    "departement":
-        "prefix oau: <http://melodi.irit.fr/ontologies/administrativeUnits.owl#> "
-        + "prefix geo: <http://www.opengis.net/ont/geosparql#> "
-        + "select ?name  where { "
-        + "?u a oau:Departement . "
-        + "?u oau:hasName ?name.}"
-}
-
-var wktQueries =
-{
-    "station":
-        "prefix mfo: <http://melodi.irit.fr/ontologies/mfo.owl#>"
-        + "prefix geo: <http://www.opengis.net/ont/geosparql#>  "
-        + "prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> "
-        + "select ?name ?wkt where "
-        + "{ ?s a mfo:MeteoStation. "
-        + "?s rdfs:label  ?name . "
-        + "?s geo:hasGeometry ?geo."
-        + "?geo geo:asWKT ?wkt."
-        + "}",
-    "tile":
-        "prefix mfo:<http://melodi.irit.fr/ontologies/mfo.owl#> "
-        + "prefix geo:<http://www.opengis.net/ont/geosparql#> "
-        + "prefix grid:<http://melodi.irit.fr/ontologies/grid.owl#> "
-        + "select ?name ?wkt where "
-        + "{"
-        + "?s a grid:Tile. "
-        + "?s grid:id ?name."
-        + "?s geo:hasGeometry ?geo. "
-        + " ?geo geo:asWKT ?wkt. "
-        + "}",
-    "region":
-        "prefix oau: <http://melodi.irit.fr/ontologies/administrativeUnits.owl#> "
-        + "prefix geo: <http://www.opengis.net/ont/geosparql#> "
-        + "select ?name ?wkt where { "
-        + "?u a oau:Region . "
-        + "?u oau:hasName ?name. "
-        + "?u oau:hasSpatialRepresentation ?s. "
-        + "?s geo:hasGeometry ?geo. "
-        + "?geo geo:asWKT ?wkt. }"
-    ,
-    "departement":
-        "prefix oau: <http://melodi.irit.fr/ontologies/administrativeUnits.owl#> "
-        + "prefix geo: <http://www.opengis.net/ont/geosparql#> "
-        + "select ?name ?wkt where { "
-        + "?u a oau:Departement . "
-        + "?u oau:hasName ?name. "
-        + "?u oau:hasSpatialRepresentation ?s. "
-        + "?s geo:hasGeometry ?geo. "
-        + "?geo geo:asWKT ?wkt. }"
-};
 
 
 var prefixes = [{
@@ -193,13 +220,37 @@ var prefixes = [{
     "prefix": "mfo",
     "uri": "http://melodi.irit.fr/ontologies/mfo.owl#"
 },
-                
+
+{
+    "prefix": "l-mfo",
+    "uri": "http://melodi.irit.fr/lod/mfo/"
+},
+
+{
+    "prefix": "qudt-1-1",
+    "uri": "http://qudt.org/1.1/schema/qudt#"
+},
+
+{
+    "prefix": "qudt-unit-1-1",
+    "uri": "http://qudt.org/1.1/vocab/unit#"
+},
+
 {
     "prefix": "vy",
     "uri": "http://melodi.irit.fr/ontologies/vineyard.owl#"
 },
 
 
+{
+    "prefix": "l-vy",
+    "uri": "http://melodi.irit.fr/lod/vineyard/"
+},
+
+{
+    "prefix": "l-admin",
+    "uri": "http://melodi.irit.fr/lod/administrativeUnit/"
+},
 
 {
     "prefix": "geo",
@@ -217,7 +268,15 @@ var prefixes = [{
     "uri": "http://melodi.irit.fr/ontologies/ndvi.owl#"
 },
 
+{
+    "prefix": "g-ndvi",
+    "uri": "http://melodi.irit.fr/lod/ndvi/"
+},
 
+{
+    "prefix": "l-grid",
+    "uri": "http://melodi.irit.fr/lod/grid/"
+},
 {
     "prefix": "grid",
     "uri": "http://melodi.irit.fr/ontologies/grid.owl#"
@@ -244,6 +303,14 @@ var prefixes = [{
     "uri": "http://melodi.irit.fr/ontologies/eventMeteo.owl#"
 },
 {
+    "prefix": "l-meteo-evt",
+    "uri": "http://melodi.irit.fr/lod/eventMeteo/"
+},
+{
+    "prefix": "l-change",
+    "uri": "http://melodi.irit.fr/lod/change/"
+},
+{
     "prefix": "change",
     "uri": "http://melodi.irit.fr/ontologies/change.owl#"
 },
@@ -258,103 +325,14 @@ var prefixes = [{
 {
     "prefix": "owl",
     "uri": "http://www.w3.org/2002/07/owl#"
+},
+{
+    "prefix": "prov",
+    "uri": "http://www.w3.org/ns/prov-o#"
 }
 
 ];
 
-var queries = [{
-    "query": "SELECT ?commune ?name ?insee \n WHERE \n" +
-        " { \n ?commune a admin:Commune. \n" +
-        " ?commune admin:hasName ?name. \n" +
-        " ?commune admin:hasSpatialRepresentation ?sp. \n" +
-        " ?commune owl:sameAs ?insee. " +
-        " ?sp geo:hasGeometry ?geo. \n" +
-        " ?geo geo:asWKT ?wkt. \n spatialfilter" +
-        "  } ", "title": "Administrative units dataset"
-},
-
-{
-    "query": "SELECT ?obs ?tile ?dt \n" +
-        "WHERE {  \n" +
-        "?obs a eom:EarthObservation. \n" +
-        "?obs sosa:hasFeatureOfInterest ?tile. \n" +
-        "?tile geo:hasGeometry ?geo.  \n" +
-        "?geo geo:asWKT ?wkt. \n spatialfilter" +
-        "?tile grid:id ?tileId. \n" +
-        "?obs sosa:resultTime ?dt. \n tempofilter" +
-        "} limit 200", "title": "Earth observation dataset"
-},
-
-
-{
-    "query": "SELECT ?obs ?place ?dt ?description \n" +
-        " WHERE {  \n" +
-        "?obs a meteo-evt:Observation. \n" +
-        "?obs sosa:hasFeatureOfInterest ?place.  \n" +
-        "?place admin:hasSpatialRepresentation ?fea.  \n" +
-        "?fea geo:hasGeometry ?geo.  \n" +
-        "?geo geo:asWKT ?wkt. \n spatialfilter" +
-        "?obs sosa:hasResult ?result. \n" +
-        "?obs sosa:resultTime ?dt. \n tempofilter" +
-        "?result rdfs:comment  ?description. \n" +
-        "} limit 200", "title": "Forecast bulletin dataset"
-},
-
-
-{
-    "query": "SELECT ?obs ?feature ?c ?dt ?procedure ?sensor ?value \n WHERE \n" +
-        "{ \n" +
-        "?obs a mfo:Observation. \n" +
-        "?obs sosa:hasFeatureOfInterest ?feature. \n" +
-        "?feature mfo:contains ?c.  \n" +
-        "?c admin:hasSpatialRepresentation ?sp. \n" +
-        "?sp geo:hasGeometry ?geo. \n" +
-        "?geo geo:asWKT ?wkt. \n spatialfilter" +
-        "?obs sosa:resultTime ?dt. \n tempofilter" +
-        "?obs sosa:hasResult ?result. \n" +
-        "?result qudt-1-1:numericValue ?value. \n" +
-        "?obs sosa:observedProperty ?obsprop. \n" +
-        "?obs sosa:madeBySensor ?sensor. \n" +
-        "?obs sosa:usedProcedure ?procedure. \n" +
-        "} limit 200", "title": "Weather Forecast dataset"
-},
-
-{
-    "query": "Select ?unit ?sp ?change ?dti1 ?dti2 ?highChangePercentage \n WHERE \n{ \n" +
-        " ?unit a admin:Commune. \n" +
-        " ?unit admin:hasSpatialRepresentation ?sp. \n" +
-        " ?sp geo:hasGeometry ?geo. \n" +
-        " ?geo geo:asWKT ?wkt. \n spatialfilter" +
-        "?unit change:hasChange ?change. \n" +
-        "?changeType change:hasClass ?change. \n" +
-        " ?changeType time:hasTime ?timeInterval.  \n intervalfilter" +
-        " ?change change:hasChangePercentage ?highChangePercentage. \n" +
-        "} limit 200", "title": "Change detection results"
-},
-
-{
-    "query": "SELECT ?obs ?foi ?dti1 ?dti2 ?deterioration \n" +
-        " WHERE \n{  \n" +
-        " ?obs a vy:VineyardObservation. \n" +
-        " ?obs vy:hasFeatureOfInterest ?foi. \n" +
-        " ?foi admin:hasSpatialRepresentation ?fea. \n" +
-        " ?fea geo:hasGeometry ?geo. \n" +
-        " ?geo geo:asWKT ?wkt. \n spatialfilter" +
-        " ?obs vy:hasTime ?timeInterval.   \n intervalfilter" +
-        " ?obs vy:hasDeterioration ?deterioration. \n" +
-        "} limit 200", "title": "Vineyard health survey"
-},
-{
-    "query": " SELECT ?a ?dt ?n ?p \n" +
-        "   WHERE { \n" +
-        "   ?featurefilterDoc ndvi:hasNdvi ?n. \n" +
-        "   ?n prov:wasGeneratedBy ?a. \n" +
-        "   ?a prov:startedAtTime ?dti. \n instantfilter" +
-        "   ?n ndvi:hasNdviPercentage ?p. \n" +
-        "} limit 200", "title": "NDVI computation"
-}
-
-];
 
 var queriesFeature = [{
     "query": "SELECT ?uri ?name ?wkt \n WHERE \n" +
@@ -369,32 +347,120 @@ var queriesFeature = [{
         "  } ", "title": "Administrative units dataset"
 }];
 
-var queriesSemantic = [{
-    "query": "SELECT ?lv ?label  \n" +
-        " WHERE \n" +
-        "  { ?lv rdfs:subClassOf ndvi:VegetationLevel. \n" +
-        "   ?lv rdfs:label ?label. \n" +
-        "   } ", "title": "NDVI Level"
+var semantictree = [
+    {
+        text: "Change level",
+        nodes: [
+            {
+                text: "No change",
+                uri: "<http://melodi.irit.fr/ontologies/change.owl#NoChange>"
+            },
+            {
+                text: "Low change",
+                uri: "<http://melodi.irit.fr/ontologies/change.owl#LowChange>"
+            },
+            {
+                text: "Middle change",
+                uri: "<http://melodi.irit.fr/ontologies/change.owl#MiddleChange>"
+            },
+            {
+                text: "High change",
+                uri: "<http://melodi.irit.fr/ontologies/change.owl#HighChange>"
+            }
+        ]
+    },
+    {
+        text: "NDVI level",
+        nodes: [
+            {
+                text: "Low vegetation",
+                uri: "<http://melodi.irit.fr/ontologies/ndvi.owl#LowVegetation>"
+            },
+            {
+                text: "Middle vegetation",
+                uri: "<http://melodi.irit.fr/ontologies/ndvi.owl#MidVegetation>"
+            },
+            {
+                text: "High vegetation",
+                uri: "<http://melodi.irit.fr/ontologies/ndvi.owl#HighVegetation>"
+            }
+        ]
+    },
+    {
+        text: "Vinyard health damage level",
+        nodes: [
+            {
+                text: "No damage",
+                uri: "<http://melodi.irit.fr/ontologies/vineyard.owl#None>"
+            },
+            {
+                text: "Low damage",
+                uri: "<http://melodi.irit.fr/ontologies/vineyard.owl#Low>"
+            },
+            {
+                text: "Middle damage",
 
-},
+                uri: "<http://melodi.irit.fr/ontologies/vineyard.owl#Mid>"
+            },
+            {
+                text: "High damage",
+
+                uri: "<http://melodi.irit.fr/ontologies/vineyard.owl#High>"
+            },
+            {
+                text: "Very high damage",
+
+                uri: "<http://melodi.irit.fr/ontologies/vineyard.owl#VeryHigh>"
+            }
+        ]
+    }
+];
+
+
+
+var wktQueries =
 {
-    "query": "SELECT ?lv ?label  \n" +
-        " WHERE \n" +
-        "  { ?lv rdfs:subClassOf change:Change. \n" +
-        "   ?lv rdfs:label ?label. \n" +
-        "   } ", "title": "Change Level"
-
-},
-{
-    "query": "SELECT ?lv ?label \n WHERE \n" +
-        " { ?lv a vy:DeteriorationLevel. \n" +
-        " ?lv rdfs:label ?label. \n" +
-        "  } ", "title": "Deterioration Level"
-
-}
-]
-
-
+    "Station":
+        "prefix mfo: <http://melodi.irit.fr/ontologies/mfo.owl#>"
+        + "prefix geo: <http://www.opengis.net/ont/geosparql#>  "
+        + "prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> "
+        + "select ?name ?wkt where "
+        + "{ ?s a mfo:MeteoStation. "
+        + "?s rdfs:label  ?name . "
+        + "?s geo:hasGeometry ?geo."
+        + "?geo geo:asWKT ?wkt."
+        + "}",
+    "S2Tile":
+        "prefix mfo:<http://melodi.irit.fr/ontologies/mfo.owl#> "
+        + "prefix geo:<http://www.opengis.net/ont/geosparql#> "
+        + "prefix grid:<http://melodi.irit.fr/ontologies/grid.owl#> "
+        + "select ?name ?wkt where "
+        + "{"
+        + "?s a grid:Tile. "
+        + "?s grid:id ?name."
+        + "?s geo:hasGeometry ?geo. "
+        + " ?geo geo:asWKT ?wkt. "
+        + "}",
+    "Region":
+        "prefix oau: <http://melodi.irit.fr/ontologies/administrativeUnits.owl#> "
+        + "prefix geo: <http://www.opengis.net/ont/geosparql#> "
+        + "select ?name ?wkt where { "
+        + "?u a oau:Region . "
+        + "?u oau:hasName ?name. "
+        + "?u oau:hasSpatialRepresentation ?s. "
+        + "?s geo:hasGeometry ?geo. "
+        + "?geo geo:asWKT ?wkt. }"
+    ,
+    "Departement":
+        "prefix oau: <http://melodi.irit.fr/ontologies/administrativeUnits.owl#> "
+        + "prefix geo: <http://www.opengis.net/ont/geosparql#> "
+        + "select ?name ?wkt where { "
+        + "?u a oau:Departement . "
+        + "?u oau:hasName ?name. "
+        + "?u oau:hasSpatialRepresentation ?s. "
+        + "?s geo:hasGeometry ?geo. "
+        + "?geo geo:asWKT ?wkt. }"
+};
 
 var queriesFeatureSemantic = [{
     "query": "SELECT ?uri ?name ?wkt \n" +
@@ -412,38 +478,31 @@ var queriesFeatureSemantic = [{
 },
 
 {
-    "query": "SELECT ?uri ?name ?wkt \n" +
-        " WHERE \n{  \n" +
-        " ?obs a vy:VineyardObservation. \n" +
-        " ?obs vy:hasDeterioration semanticfilter. \n" +
-        " ?obs vy:hasFeatureOfInterest ?uri. \n" +
-        " ?uri admin:hasName ?name. \n" +
-        " ?uri admin:hasSpatialRepresentation ?fea. \n" +
-        " ?fea geo:hasGeometry ?geo. \n" +
-        " ?geo geo:asWKT ?wkt. \n spatialfilter" +
-        " ?obs vy:hasTime ?timeInterval.   \n intervalfilter" +
-        "} limit 200", "title": "Commune by vineyard health survey"
+    "query": "Select ?uri ?name ?wkt \n" +
+        "WHERE \n { \n" +
+        "?uri change:hasChange ?changeHigh.\n" +
+        "?changeHigh a semanticfilter.\n" +
+        "?changeType change:hasClass ?changeHigh.\n" +
+        "?changeType time:hasTime ?timeInterval. \n intervalfilter \n" +
+        "?uri admin:hasName ?name. \n" +
+        "?uri admin:hasSpatialRepresentation ?fea. \n" +
+        "?fea geo:hasGeometry/geo:asWKT ?wkt. \n spatialfilter} limit 200", "title": "Commune by change level"
 
 },
 
 {
-    "query": "SELECT ?uri ?name ?wkt \n" +
-        " WHERE \n{  \n" +
-        " ?obs a vy:VineyardObservation. \n" +
-        " ?obs vy:hasDeterioration semanticfilter. \n" +
-        " ?obs vy:hasFeatureOfInterest ?uri. \n" +
-        " ?uri admin:hasName ?name. \n" +
-        " ?uri admin:hasSpatialRepresentation ?fea. \n" +
-        " ?fea geo:hasGeometry ?geo. \n" +
-        " ?geo geo:asWKT ?wkt. \n spatialfilter" +
-        " ?obs vy:hasTime ?timeInterval.   \n intervalfilter" +
-        "} limit 200", "title": "Commune by vineyard health survey"
+    "query": "SELECT distinct ?uri ?name ?wkt \n" +
+        "   WHERE { \n" +
+        "   ?uri ndvi:hasNdvi ?ndvi. \n" +
+        "   ?ndvi a semanticfilter. \n" +
+        "   ?ndvi prov:wasGeneratedBy ?action. \n" +
+        "   ?action prov:startedAtTime ?dti. \n instantfilter" +
+        "   ?ndvi ndvi:hasNdviPercentage ?percentage. filter(?percentage >= 10). \n" +
+        "   ?uri admin:hasSpatialRepresentation ?fea. \n" +
+        "   ?uri admin:hasName ?name. \n" +
+        "   ?fea geo:hasGeometry/geo:asWKT ?wkt. \n spatialfilter} limit 200", "title": "Commune by ndvi"
 
-},
-
-
-]
-
+}];
 
 var queriesDoc = [{
     "query": "SELECT ?uri ?name ?wkt \n WHERE \n" +
@@ -515,7 +574,6 @@ var queriesDoc = [{
         " ?change change:hasChangePercentage ?percentage. \n" +
         " ?change rdf:type ?type. } order by ?type ?dti1", "title": "Change detection results"
 },
-
 {
     "query": "SELECT ?observation ?dti1 ?dti2 ?deterioration \n" +
         " WHERE \n{  \n" +
@@ -526,18 +584,14 @@ var queriesDoc = [{
         "} limit 200", "title": "Vineyard health survey"
 },
 {
-    "query": " SELECT ?ndvi ?dti ?n ?percentage \n" +
+    "query": " SELECT ?type ?dti ?percentage \n" +
         "   WHERE { \n" +
         "   ?featurefilterDoc ndvi:hasNdvi ?ndvi. \n" +
+        "   ?ndvi a ?type. \n" +
         "   ?ndvi prov:wasGeneratedBy ?action. \n" +
         "   ?action prov:startedAtTime ?dti. \n instantfilter" +
         "   ?ndvi ndvi:hasNdviPercentage ?percentage. \n" +
-        "} limit 200", "title": "NDVI computation"
-}
-
-
-
-
-
+        "} order by ?dti", "title": "NDVI computation"
+}   
 ];
 

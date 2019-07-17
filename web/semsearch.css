@@ -2,6 +2,11 @@
     margin: 0 auto;
 }
 
+input[type=checkbox] {
+   margin-left: 5px;
+    }
+   
+
 button {
     margin-right: 10px;
     margin-top: 10px
@@ -21,14 +26,21 @@ h3 {
     display: inline-block;
 }
 
+button {
+    margin: 0px !important;
+}
+
 #drawncoords {
     clear: both;
 }
 
+.floatright {
+    float: right;
+}
+
 #map, #mapDraw {
-    width: 750px;
+    margin: 5px;
     height: 500px;
-    float: left;
 }
 
 #sem {
@@ -103,7 +115,7 @@ h3 {
 }
 
 #feature {
-    width: 200px;
+    width: 300px;
 }
 
 #btn {
@@ -132,8 +144,7 @@ select {
 }
 
 #btnSearch {
-    margin-top: 25px;
-    margin-left: 25px;
+    margin: 10px;
 }
 
 #btnsem {
@@ -142,8 +153,8 @@ select {
 }
 
 .easy-autocomplete {
-    float: right !important;
-    width: 280px !important;
+    display: inline-block;
+    width: 300px !important;
     margin-top: -5px !important;
 }
 

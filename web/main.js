@@ -57,7 +57,7 @@ $('#cboxsem').change(function () {
 
 
 function loadWKT(ds) {
- 
+
   let query = host + queryJSON + encodeURIComponent(wktQueries[ds]);
   $.getJSON(query, function (result) {
 
@@ -85,14 +85,26 @@ function loadWKT(ds) {
 var table = [];
 var tableheader = [];
 var chartdata;
+var myChart;
 
 function loadGraph() {
   var ctx = $("#meteochart")[0].getContext('2d');
   chartdata = { labels: [], datasets: [] };
-  var myChart = new Chart(ctx, {
+  myChart = new Chart(ctx, {
     type: 'line',
     data: chartdata,
     options: {
+
+      tooltips: {
+        mode: 'index',
+        intersect: false,
+      },
+
+      hover: {
+        mode: 'nearest',
+        intersect: true
+      },
+
       scales: {
         yAxes: [{
           id: 'A',
@@ -107,6 +119,7 @@ function loadGraph() {
             min: 0
           }
         }],
+
         xAxes: [{
           type: 'time',
           distribution: 'series',
@@ -116,6 +129,10 @@ function loadGraph() {
           ticks: {
             source: 'data',
             autoSkip: true
+          },
+          scaleLabel: {
+            display: true,
+            labelString: 'Date'
           }
         }],
 
@@ -581,6 +598,21 @@ $('#btnGraphic').click(function () {
     $('#btnGraphic').html("Graphical mode");
   }
 });
+
+$("#meteochart").onclick = function (evt) {
+  let activePoints = myChart.getElementAtEvent(event);
+
+  // make sure click was on an actual point
+  if (activePoints.length > 0) {
+    let clickedDatasetIndex = activePoints[0]._datasetIndex;
+    let clickedElementindex = activePoints[0]._index;
+    //var label = myLine.data.labels[clickedElementindex];
+    //var value = myLine.data.datasets[clickedDatasetIndex].data[clickedElementindex];     
+    //alert("Clicked: " + label + " - " + value);
+    let img = myChart.data.datasets[clickedDatasetIndex]._meta[0].data[clickedElementindex]._model.pointStyle;
+    window.open(img.src);
+  }
+};
 
 
 function viewFeature(id) {

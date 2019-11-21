@@ -32,6 +32,9 @@ button {
 
 #drawncoords {
     clear: both;
+    width:100%;
+    overflow: hidden;
+    height: 2.5em
 }
 
 .floatright {

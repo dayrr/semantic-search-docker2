@@ -175,6 +175,7 @@ mapDraw.on('singleclick', function (evt) {
 });
 
 draw.on('drawend', function (event) {
+    FeatureVectorSource.clear();
     let feat = event.feature;
     let co = format.writeGeometry(feat.getGeometry().transform('EPSG:3857', 'EPSG:4326'), { decimals: 4 });
     $('#drawncoords').html(co);

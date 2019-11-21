@@ -1,58 +1,53 @@
 var WMSServices = [{
-    "name":"Cesbio2014",
-    "url":"http://cyan.ups-tlse.fr:8080/geoserver/Theia_OSO/wms?",
-    "layers":"Theia_OSO:Classif_France2014_refV3v7_regionClimat_ColorIndexed_4urban"
+    "name": "Cesbio2014",
+    "url": "http://cyan.ups-tlse.fr:8080/geoserver/Theia_OSO/wms?",
+    "layers": "Theia_OSO:Classif_France2014_refV3v7_regionClimat_ColorIndexed_4urban"
 },
 {
-    "name":"Cadastral",
-    "url":"http://wxs.ign.fr/4i3ybkskcwog7hzyfw32fbub/geoportail/r/wms?",
-    "layers":"CADASTRALPARCELS.PARCELS"
+    "name": "Cadastral",
+    "url": "http://wxs.ign.fr/nxs15w617bw96zo31sbc2za8/geoportail/r/wms?",
+    "layers": "CADASTRALPARCELS.PARCELS"
 },
 {
-    "name":"Viticulture",
-    "url":"http://wxs.ign.fr/4i3ybkskcwog7hzyfw32fbub/geoportail/r/wms?",
-    "layers":"Aire-Parcellaire"
-},
-
-{
-    "name":"Vegetation",
-    "url":"http://wxs.ign.fr/4i3ybkskcwog7hzyfw32fbub/geoportail/v/wms?",
-    "layers":"BDTOPO-GEOPO-VEGETATION_WLD_WGS84G"
-},
-{
-    "name":"SPOT2017",
-    "url":"http://wxs.ign.fr/4i3ybkskcwog7hzyfw32fbub/geoportail/r/wms?",
-    "layers":"ORTHOIMAGERY.ORTHOPHOTOS.ORTHO-EXPRESS.2017"
-},
-{
-    "name":"SPOT2018",
-    "url":"http://wxs.ign.fr/4i3ybkskcwog7hzyfw32fbub/geoportail/r/wms?",
-    "layers":"ORTHOIMAGERY.ORTHOPHOTOS.ORTHO-EXPRESS.2018"
+    "name": "Viticulture",
+    "url": "http://wxs.ign.fr/nxs15w617bw96zo31sbc2za8/geoportail/r/wms?",
+    "layers": "Aire-Parcellaire"
 },
 
 {
-    "name":"RPG2016",
-    "url":"http://wxs.ign.fr/4i3ybkskcwog7hzyfw32fbub/geoportail/r/wms?",
-    "layers":"LANDUSE.AGRICULTURE2016"
+    "name": "SPOT2017",
+    "url": "http://wxs.ign.fr/nxs15w617bw96zo31sbc2za8/geoportail/r/wms?",
+    "layers": "ORTHOIMAGERY.ORTHOPHOTOS.ORTHO-EXPRESS.2017"
+},
+{
+    "name": "SPOT2018",
+    "url": "http://wxs.ign.fr/nxs15w617bw96zo31sbc2za8/geoportail/r/wms?",
+    "layers": "ORTHOIMAGERY.ORTHOPHOTOS.ORTHO-EXPRESS.2018"
+},
+
+{
+    "name": "RPG2016",
+    "url": "http://wxs.ign.fr/nxs15w617bw96zo31sbc2za8/geoportail/r/wms?",
+    "layers": "LANDUSE.AGRICULTURE2016"
 },
 
 
 {
-    "name":"RPG2017",
-    "url":"http://wxs.ign.fr/4i3ybkskcwog7hzyfw32fbub/geoportail/r/wms?",
-    "layers":"LANDUSE.AGRICULTURE2017"
+    "name": "RPG2017",
+    "url": "http://wxs.ign.fr/4i3ybkskcwog7hzyfw32fbub/geoportail/r/wms?",
+    "layers": "LANDUSE.AGRICULTURE2017"
 },
 
 {
-    "name":"CorineLC2018",
-    "url":"https://wxs.ign.fr/corinelandcover/geoportail/r/wms?",
-    "layers":"LANDCOVER.CLC18_FR"
+    "name": "CorineLC2018",
+    "url": "https://wxs.ign.fr/corinelandcover/geoportail/r/wms?",
+    "layers": "LANDCOVER.CLC18_FR"
 },
 
 {
-    "name":"CorineLC2012R",
-    "url":"https://wxs.ign.fr/corinelandcover/geoportail/r/wms?",
-    "layers":"LANDCOVER.CLC18_FR"
+    "name": "CorineLC2012R",
+    "url": "https://wxs.ign.fr/corinelandcover/geoportail/r/wms?",
+    "layers": "LANDCOVER.CLC18_FR"
 },
 ];
 
@@ -63,40 +58,54 @@ var WMSServices = [{
 var changes = [
     {
         "name": "No change (%)",
-        "uri": "http://melodi.irit.fr/ontologies/change.owl#NoChange",
-        "color": "#ffe119"
+        "uri": "http://melodi.irit.fr/ontologies/cd.owl#NoChange",
+        "class":"change:NoChange", 
+        "color": "#ffe119",
+        "key": "No"
     },
     {
         "name": "Low change (%)",
-        "uri": "http://melodi.irit.fr/ontologies/change.owl#LowChange",
-        "color": "#4363d8"
+        "uri": "http://melodi.irit.fr/ontologies/cd.owl#LowChange",
+        "class":"change:LowChange", 
+        "color": "#4363d8",
+        "key": "Low"
     },
     {
         "name": "Middle change (%)",
-        "uri": "http://melodi.irit.fr/ontologies/change.owl#MidChange",
-        "color": "#f58231"
+        "uri": "http://melodi.irit.fr/ontologies/cd.owl#MidChange",
+        "class":"change:MidChange", 
+        "color": "#f58231",
+        "key": "Mid"
+
     },
     {
         "name": "High change (%)",
         "uri": "http://melodi.irit.fr/ontologies/change.owl#HighChange",
-        "color": "#3cb44b"
+        "class":"change:HighChange", 
+        "color": "#3cb44b",
+        "key": "High"
+
     }
 ];
 var ndvis = [
     {
-        "name": "Low vegetation",
+        "name": "Low vegetation (%)",
         "uri": "http://melodi.irit.fr/ontologies/ndvi.owl#LowVegetation",
-        "color": "#4363d8"
+        "color": "#4363d8",
+        "key": "Low"
     },
     {
-        "name": "Middle vegetation",
+        "name": "Middle vegetation (%)",
         "uri": "http://melodi.irit.fr/ontologies/ndvi.owl#MidVegetation",
-        "color": "#f58231"
+        "color": "#f58231",
+        "key": "Mid"
+
     },
     {
-        "name": "High vegetation",
+        "name": "High vegetation (%)",
         "uri": "http://melodi.irit.fr/ontologies/ndvi.owl#HighVegetation",
-        "color": "#3cb44b"
+        "color": "#3cb44b",
+        "key": "High"
     }
 ];
 
@@ -199,11 +208,9 @@ var featureQueries =
 {
 
     "commune":
-        "prefix oau: <http://melodi.irit.fr/ontologies/administrativeUnits.owl#> "
-        + "prefix geo: <http://www.opengis.net/ont/geosparql#> "
-        + "select ?uri ?name  where { "
-        + "?uri a oau:Commune . "
-        + "?uri oau:hasName ?name.}"
+        "select ?uri ?name  where { "
+        + "?uri a admin:Commune. "
+        + "?uri admin:name ?name.}"
 }
 
 
@@ -221,10 +228,6 @@ var prefixes = [{
     "uri": "http://melodi.irit.fr/ontologies/mfo.owl#"
 },
 
-{
-    "prefix": "l-mfo",
-    "uri": "http://melodi.irit.fr/lod/mfo/"
-},
 
 {
     "prefix": "qudt-1-1",
@@ -242,15 +245,6 @@ var prefixes = [{
 },
 
 
-{
-    "prefix": "l-vy",
-    "uri": "http://melodi.irit.fr/lod/vineyard/"
-},
-
-{
-    "prefix": "l-admin",
-    "uri": "http://melodi.irit.fr/lod/administrativeUnit/"
-},
 
 {
     "prefix": "geo",
@@ -262,21 +256,18 @@ var prefixes = [{
     "uri": "http://melodi.irit.fr/ontologies/administrativeUnits.owl#"
 },
 
+{
+    "prefix": "strdf",
+    "uri": "http://strdf.di.uoa.gr/ontology#"
+},
+
 
 {
     "prefix": "ndvi",
     "uri": "http://melodi.irit.fr/ontologies/ndvi.owl#"
 },
 
-{
-    "prefix": "g-ndvi",
-    "uri": "http://melodi.irit.fr/lod/ndvi/"
-},
 
-{
-    "prefix": "l-grid",
-    "uri": "http://melodi.irit.fr/lod/grid/"
-},
 {
     "prefix": "grid",
     "uri": "http://melodi.irit.fr/ontologies/grid.owl#"
@@ -299,20 +290,13 @@ var prefixes = [{
 
 
 {
-    "prefix": "meteo-evt",
-    "uri": "http://melodi.irit.fr/ontologies/eventMeteo.owl#"
+    "prefix": "mfe",
+    "uri": "http://melodi.irit.fr/ontologies/mfe.owl#"
 },
-{
-    "prefix": "l-meteo-evt",
-    "uri": "http://melodi.irit.fr/lod/eventMeteo/"
-},
-{
-    "prefix": "l-change",
-    "uri": "http://melodi.irit.fr/lod/change/"
-},
+
 {
     "prefix": "change",
-    "uri": "http://melodi.irit.fr/ontologies/change.owl#"
+    "uri": "http://melodi.irit.fr/ontologies/cd.owl#"
 },
 {
     "prefix": "rdf",
@@ -323,26 +307,28 @@ var prefixes = [{
     "uri": "http://www.w3.org/2000/01/rdf-schema#"
 },
 {
+    "prefix": "dcat",
+    "uri": "http://www.w3.org/ns/dcat#"
+},
+
+{
     "prefix": "owl",
     "uri": "http://www.w3.org/2002/07/owl#"
 },
 {
-    "prefix": "prov",
-    "uri": "http://www.w3.org/ns/prov-o#"
+    "prefix": "prov-o",
+    "uri": "http://www.w3.org/TR/prov-o/"
 }
 
 ];
 
 
-var queriesFeature = [{
+var queryVillage = [{
     "query": "SELECT ?uri ?name ?wkt \n WHERE \n" +
         " { \n ?uri a admin:Commune. \n" +
-
-        " ?uri admin:hasName ?name. \n" +
-        " filter(?name=\"?featurename\"^^<http://www.w3.org/2001/XMLSchema#String>). \n" +
-        " ?uri admin:hasSpatialRepresentation ?sp. \n" +
-        " ?uri owl:sameAs ?insee. " +
-        " ?sp geo:hasGeometry ?geo. \n" +
+        " ?uri admin:name ?name. \n" +
+        " filter(?uri=<http://melodi.irit.fr/resource/Commune/?featureURI>). \n" +
+        " ?uri geo:hasGeometry ?geo. \n" +
         " ?geo geo:asWKT ?wkt. \n" +
         "  } ", "title": "Administrative units dataset"
 }];
@@ -353,22 +339,27 @@ var semantictree = [
         nodes: [
             {
                 text: "No change",
-                uri: "<http://melodi.irit.fr/ontologies/change.owl#NoChange>"
+                uri: "<http://melodi.irit.fr/ontologies/change.owl#NoChange>",
+                class:"change:NoChange", 
             },
             {
                 text: "Low change",
-                uri: "<http://melodi.irit.fr/ontologies/change.owl#LowChange>"
+                uri: "<http://melodi.irit.fr/ontologies/change.owl#LowChange>",
+                class:"change:LowChange", 
             },
             {
                 text: "Middle change",
-                uri: "<http://melodi.irit.fr/ontologies/change.owl#MiddleChange>"
+                uri: "<http://melodi.irit.fr/ontologies/change.owl#MidChange>",
+                class:"change:MidChange", 
             },
             {
                 text: "High change",
-                uri: "<http://melodi.irit.fr/ontologies/change.owl#HighChange>"
+                uri: "<http://melodi.irit.fr/ontologies/change.owl#HighChange>",
+                class:"change:HighChange", 
             }
         ]
-    },
+    }
+	/*,
     {
         text: "NDVI level",
         nodes: [
@@ -414,6 +405,7 @@ var semantictree = [
             }
         ]
     }
+	*/
 ];
 
 
@@ -425,8 +417,8 @@ var wktQueries =
         + "prefix geo: <http://www.opengis.net/ont/geosparql#>  "
         + "prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> "
         + "select ?name ?wkt where "
-        + "{ ?s a mfo:MeteoStation. "
-        + "?s rdfs:label  ?name . "
+        + "{ ?s a mfo:Station. "
+        + "?s mfo:name  ?name . "
         + "?s geo:hasGeometry ?geo."
         + "?geo geo:asWKT ?wkt."
         + "}",
@@ -446,9 +438,8 @@ var wktQueries =
         + "prefix geo: <http://www.opengis.net/ont/geosparql#> "
         + "select ?name ?wkt where { "
         + "?u a oau:Region . "
-        + "?u oau:hasName ?name. "
-        + "?u oau:hasSpatialRepresentation ?s. "
-        + "?s geo:hasGeometry ?geo. "
+        + "?u oau:name ?name. "
+        + "?u geo:hasGeometry ?geo. "
         + "?geo geo:asWKT ?wkt. }"
     ,
     "Departement":
@@ -456,9 +447,8 @@ var wktQueries =
         + "prefix geo: <http://www.opengis.net/ont/geosparql#> "
         + "select ?name ?wkt where { "
         + "?u a oau:Departement . "
-        + "?u oau:hasName ?name. "
-        + "?u oau:hasSpatialRepresentation ?s. "
-        + "?s geo:hasGeometry ?geo. "
+        + "?u oau:name ?name. "
+        + "?u geo:hasGeometry ?geo. "
         + "?geo geo:asWKT ?wkt. }"
 };
 
@@ -477,16 +467,29 @@ var queriesFeatureSemantic = [{
 
 },
 
+
+
+
 {
-    "query": "Select ?uri ?name ?wkt \n" +
+    "query": "Select ?uri ?wkt ?landcover\n" +
         "WHERE \n { \n" +
-        "?uri change:hasChange ?changeHigh.\n" +
-        "?changeHigh a semanticfilter.\n" +
-        "?changeType change:hasClass ?changeHigh.\n" +
-        "?changeType time:hasTime ?timeInterval. \n intervalfilter \n" +
-        "?uri admin:hasName ?name. \n" +
-        "?uri admin:hasSpatialRepresentation ?fea. \n" +
-        "?fea geo:hasGeometry/geo:asWKT ?wkt. \n spatialfilter} limit 200", "title": "Commune by change level"
+        "?change a semfilter. \n"+
+        "?change dcat:dataset ?ds. \n" +
+        "?uri change:hasChangeCatalog ?ds. \n" +
+        "?uri geo:hasGeometry/geo:asWKT ?wkt. \n spatialfilter" +
+        "?change change:hasPercentage ?percentage. \n" +
+        "filter(?percentage>=30) \n" +
+        "?activity prov-o:generated ?ds. \n" +
+        "?activity prov-o:usedImage1 ?img1. \n" +
+        "?activity prov-o:usedImage2 ?img2. \n" +
+        "?img1 sosa:resultTime ?dt1. \n" +
+        "?img2 sosa:resultTime ?dt2. \n" +
+        "?uri admin:hasLandCover ?lc. \n" +
+        "?lc admin:name ?landcover. \n" +
+        "} limit 1000",
+
+
+    "title": "Parcel by change level"
 
 },
 
@@ -504,94 +507,120 @@ var queriesFeatureSemantic = [{
 
 }];
 
-var queriesDoc = [{
-    "query": "SELECT ?uri ?name ?wkt \n WHERE \n" +
-        " { \n ?uri a admin:Commune. \n" +
-        " ?uri admin:hasName ?name. \n" +
-        " ?uri admin:hasSpatialRepresentation ?sp. \n" +
-        " ?uri owl:sameAs ?insee. " +
-        " ?sp geo:hasGeometry ?geo. \n" +
-        " ?geo geo:asWKT ?wkt. \n spatialfilter" +
-        "  } ", "title": "Administrative units dataset"
-},
 
-{
-    "query": "SELECT ?observation ?tile ?level ?dti ?cloudCover ?link ?size ?quicklook \n" +
-        "WHERE {  \n" +
-        "?observation a eom:EarthObservation. \n" +
-        "?observation sosa:hasFeatureOfInterest ?tile. \n" +
-        "?tile geo:hasGeometry ?geo.  \n" +
-        "?geo geo:asWKT ?wkt. \n spatialfilterDoc" +
-        "?tile grid:id ?tileId. \n" +
-        "?observation sosa:resultTime ?dt. \n tempofilter" +
-        "?observation sosa:hasResult ?result. " +
-        "?result eom:browse ?browse." +
-        "?browse eom:fileName ?quicklook. " +
-        "?result eom:product ?product. " +
-        "?product eom:fileName ?link." +
-        "?product eom:size ?size. " +
-        "?product eom:cloudCover ?cloudCover. " +
-        "?observation eom:processingLevel ?level. } order by ?dti", "title": "Earth observation dataset"
-},
+var queriesDoc = [
+    {
+        "query": "Select ?contenance ?number ?landcover ?village (strdf:area(strdf:transform(?wkt, <http://www.opengis.net/def/crs/EPSG/2154>))/10000 as ?area_ha) \n WHERE \n{ \n" +
+            " ?parcel a admin:Parcel." +
+            " filter(?parcel = ?featurefilterDoc). \n" +
+            " ?parcel admin:contenance ?contenance. \n" +
+            " ?parcel admin:hasLandCover ?lc. \n" +
+            " ?lc admin:name ?landcover. \n" +
+            " ?parcel admin:belongsTo ?village.   \n" +
+            " ?parcel admin:number ?number.  \n" +
+            " ?parcel geo:hasGeometry/geo:asWKT ?wkt.}\n", "title": "Cadastral"
+    },
+    {
+        "query": "SELECT ?village ?name ?population ?area ?insee \n WHERE \n" +
+            " { \n ?featurefilterDoc admin:belongsTo ?village. \n" +
+            " ?village admin:name ?name. \n" +
+            " ?village admin:population ?population. \n" +
+            " ?village admin:area ?area. \n" +
+            " ?village owl:sameAs ?insee. " +
+            "  } ", "title": "Administrative unit"
+    },
 
-
-{
-    "query": "SELECT ?observation ?place ?dti ?description \n" +
-        " WHERE {  \n" +
-        "?observation a meteo-evt:Observation. \n" +
-        "?observation sosa:hasFeatureOfInterest ?place.  \n" +
-        "?place admin:hasSpatialRepresentation ?fea.  \n" +
-        "?fea geo:hasGeometry ?geo.  \n" +
-        "?geo geo:asWKT ?wkt. \n spatialfilterDoc" +
-        "?observation sosa:hasResult ?result. \n" +
-        "?observation sosa:resultTime ?dt. \n tempofilter" +
-        "?result rdfs:comment  ?description. \n" +
-        "} limit 200", "title": "Forecast bulletin dataset"
-},
+    {
+        "query": "SELECT ?observation ?tile ?dti ?type ?link ?size ?quicklook \n" +
+            "WHERE {  \n" +
+            "?observation a eom:EarthObservation. \n" +
+            "?observation sosa:hasFeatureOfInterest ?tile. \n" +
+            "?tile geo:hasGeometry/geo:asWKT ?wktTile. \n " +
+            "?featurefilterDoc geo:hasGeometry/geo:asWKT ?wktP. \n" +
+            "filter(geof:sfContains(?wktTile, ?wktP)). \n" +
+            "?observation sosa:resultTime ?dti. \n instantfilter" +
+            "?observation sosa:hasResult ?result. " +
+            "?result eom:browseFileName  ?quicklook. " +
+            "?result eom:title   ?product. " +
+            "?result eom:fileName  ?link." +
+            "?result eom:fileSize ?size. " +
+            "?result eom:type ?type. " +
+            " } order by ?dti", "title": "Earth observation"
+    },
 
 
-{
-    "query": "SELECT ?observation ?dti ?procedure ?sensor ?value \n WHERE \n" +
-        "{ \n" +
-        "?observation a mfo:Observation. \n" +
-        "?observation sosa:hasFeatureOfInterest ?feature. \n" +
-        "?feature mfo:contains ?featurefilterDoc.  \n" +
-        "?observation sosa:resultTime ?dt. \n tempofilter" +
-        "?observation sosa:hasResult ?result. \n" +
-        "?result qudt-1-1:numericValue ?value. \n" +
-        "?observation sosa:observedProperty ?obsprop. \n" +
-        "?observation sosa:madeBySensor ?sensor. \n" +
-        "?observation sosa:usedProcedure ?procedure. \n" +
-        "} order by ?dti", "title": "Weather Forecast dataset"
-},
 
-{
-    "query": "Select ?change ?type ?dti1 ?dti2 ?percentage \n WHERE \n{ \n" +
 
-        " ?featurefilterDoc change:hasChange ?change. \n" +
-        " ?changeType change:hasClass ?change. \n" +
-        " ?changeType time:hasTime ?timeInterval.  \n intervalfilter" +
-        " ?change change:hasChangePercentage ?percentage. \n" +
-        " ?change rdf:type ?type. } order by ?type ?dti1", "title": "Change detection results"
-},
-{
-    "query": "SELECT ?observation ?dti1 ?dti2 ?deterioration \n" +
-        " WHERE \n{  \n" +
-        " ?observation a vy:VineyardObservation. \n" +
-        " ?observation vy:hasFeatureOfInterest ?featurefilterDoc. \n" +
-        " ?observation vy:hasTime ?timeInterval.   \n intervalfilter" +
-        " ?observation vy:hasDeterioration ?deterioration. \n" +
-        "} limit 200", "title": "Vineyard health survey"
-},
-{
-    "query": " SELECT ?type ?dti ?percentage \n" +
-        "   WHERE { \n" +
-        "   ?featurefilterDoc ndvi:hasNdvi ?ndvi. \n" +
-        "   ?ndvi a ?type. \n" +
-        "   ?ndvi prov:wasGeneratedBy ?action. \n" +
-        "   ?action prov:startedAtTime ?dti. \n instantfilter" +
-        "   ?ndvi ndvi:hasNdviPercentage ?percentage. \n" +
-        "} order by ?dti", "title": "NDVI computation"
-}   
+    {
+        "query": "SELECT ?observation ?dti ?procedure ?sensor ?value \n WHERE \n" +
+            "{ \n" +
+            "?featurefilterDoc admin:belongsTo ?village. \n" +
+            "?feature mfo:includes ?village. \n" +
+            "?observation a mfo:Observation. \n" +
+            "?observation sosa:hasFeatureOfInterest ?feature. \n" +
+            "?observation sosa:resultTime ?dti. \n instantfilter" +
+            "?observation sosa:hasResult ?result. \n" +
+            "?result qudt-1-1:numericValue ?value. \n" +
+            "?observation sosa:observedProperty ?obsprop. \n" +
+            "?observation sosa:madeBySensor ?sensor. \n" +
+            "?observation sosa:usedProcedure ?procedure. \n" +
+            "} order by ?dti", "title": "Weather forecast"
+    },
+
+
+    {
+        "query": "Select ?change ?dti1 ?dti2 ?percentage \n WHERE \n{ \n" +
+            "?featurefilterDoc change:hasChangeCatalog ?ds. \n" +
+            "?change dcat:dataset ?ds. \n" +
+            "?change change:hasPercentage ?percentage. \n" +
+            "?activity prov-o:generated ?ds. \n" +
+            "?activity prov-o:usedImage1 ?img1. \n" +
+            "?activity prov-o:usedImage2 ?img2. \n" +
+            "?img1 sosa:resultTime ?dti1. \n" +
+            "?img2 sosa:resultTime ?dti2. \n" +
+            "} order by ?dti1", "title": "Change detection"
+    },
+
+
+    /*
+    {
+        "query": "SELECT ?observation ?dti1 ?dti2 ?deterioration \n" +
+            " WHERE \n{  \n" +
+            " ?observation a vy:VineyardObservation. \n" +
+            " ?observation vy:hasFeatureOfInterest ?featurefilterDoc. \n" +
+            " ?observation vy:hasTime ?timeInterval.   \n intervalfilter" +
+            " ?observation vy:hasDeterioration ?deterioration. \n" +
+            "} limit 200", "title": "Vineyard health survey"
+    },
+    */
+    {
+        "query": " SELECT ?ndvi ?dti ?percentage \n" +
+            "   WHERE { \n" +
+            "   ?featurefilterDoc ndvi:hasNDVICatalog ?ds. \n" +
+            "   ?ndvi dcat:dataset ?ds. \n" +
+            "   ?ndvi ndvi:hasPercentage ?percentage.  \n" +
+            "   ?activity prov-o:generated ?ds. \n" +
+            "   ?activity prov-o:used ?img. \n" +
+            "	?img sosa:resultTime ?dti. instantfilterzone" +
+            "} order by ?dti", "title": "NDVI"
+    },
+    {
+        "query": "SELECT ?observation ?dti ?place ?title ?keyword  ?topic ?fact ?description \n" +
+            " WHERE {  \n" +
+            "?observation a mfe:Event. \n" +
+            "?observation mfe:hasFeatureOfInterest ?place.  \n" +
+            "?place geo:hasGeometry/geo:asWKT ?wktPlace. \n" +
+            "?featurefilterDoc geo:hasGeometry/geo:asWKT ?wktP. \n" +
+            "filter(geof:sfContains(?wktPlace, ?wktP)). \n" +
+            "?observation mfe:title ?title. \n" +
+            "?observation mfe:keyword ?keyword. \n" +
+            "?observation mfe:topic ?topic. \n" +
+            "?observation mfe:fact ?fact. \n" +
+            "?observation mfe:description ?description. \n" +
+            "?observation mfe:startDate ?dti. \n instantfilterzone" +
+            "} limit 200", "title": "Weather newsletters"
+    }
+
 ];
+
 

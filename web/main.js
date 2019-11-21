@@ -85,26 +85,14 @@ function loadWKT(ds) {
 var table = [];
 var tableheader = [];
 var chartdata;
-var myChart;
-
+Chart.defaults.line.spanGaps = true;
 function loadGraph() {
   var ctx = $("#meteochart")[0].getContext('2d');
   chartdata = { labels: [], datasets: [] };
-  myChart = new Chart(ctx, {
+  var myChart = new Chart(ctx, {
     type: 'line',
     data: chartdata,
     options: {
-
-      tooltips: {
-        mode: 'index',
-        intersect: false,
-      },
-
-      hover: {
-        mode: 'nearest',
-        intersect: true
-      },
-
       scales: {
         yAxes: [{
           id: 'A',
@@ -119,7 +107,6 @@ function loadGraph() {
             min: 0
           }
         }],
-
         xAxes: [{
           type: 'time',
           distribution: 'series',
@@ -129,10 +116,6 @@ function loadGraph() {
           ticks: {
             source: 'data',
             autoSkip: true
-          },
-          scaleLabel: {
-            display: true,
-            labelString: 'Date'
           }
         }],
 
@@ -140,176 +123,172 @@ function loadGraph() {
     }
   });
 
-  $.each(mesures, function (idx, mesure) {
-    let filtered = json[3].filter(function (item) {
-      return item.procedure === "http://melodi.irit.fr/lod/mfo/procedure_" + mesure['uri'];
+  //Draw meteo measures
+  if (json[3] != null)
+    $.each(mesures, function (idx, mesure) {
+      let filtered = json[3].filter(function (item) {
+        return item.procedure === "http://melodi.irit.fr/resource/Procedure/" + mesure['uri'];
+      });
+
+      let chartlb = $(filtered).map(function () {
+        return this['dti'].substr(0, 10);
+      }).get()
+
+
+      let chartval = $(filtered).map(function () {
+        return this['value'];
+      }).get()
+
+      if (chartdata.labels === undefined || chartdata.labels.length == 0)
+        chartdata.labels = chartlb;
+      chartdata.datasets.push({
+        data: chartval,
+        label: mesure['name'],
+        yAxisID: 'A',
+        hidden: true,
+        fill: false,
+        pointRadius: 2,
+        lineTension: 0.5,
+        borderWidth: 2,
+        borderColor: mesure['color']
+      });
     });
 
-    let chartlb = $(filtered).map(function () {
-      return this['dti'].substr(0, 10);
-    }).get()
-
-
-    let chartval = $(filtered).map(function () {
-      return this['value'];
-    }).get()
-
-    if (chartdata.labels === undefined || chartdata.labels.length == 0)
-      chartdata.labels = chartlb;
-    chartdata.datasets.push({
-      data: chartval,
-      label: mesure['name'],
-      yAxisID: 'A',
-      hidden: true,
-      fill: false,
-      pointRadius: 2,
-      lineTension: 0.5,
-      borderWidth: 2,
-      borderColor: mesure['color']
-    });
-  });
-
+  //Draw quicklook
   let obsList = [];
   let obsData = [];
-
-  for (i = 0; i < chartdata.labels.length; i++) {
-    let imgsrc = '';
-    for (j = 0; j < json[1].length; j++)
-      if (chartdata.labels[i] === json[1][j]['dti'].substr(0, 10))
-        imgsrc = json[1][j]['quicklook'];
-    if (imgsrc === '') {
-      obsList.push("");
-      obsData.push(null);
+  if (json[2] != null) {
+    for (i = 0; i < chartdata.labels.length; i++) {
+      let imgsrc = '';
+      for (j = 0; j < json[2].length; j++)
+        if (chartdata.labels[i] === json[2][j]['dti'].substr(0, 10))
+          if (json[2][j]['quicklook'] != "None")
+            imgsrc = json[2][j]['quicklook'];
+      if (imgsrc === '') {
+        obsList.push("");
+        obsData.push(null);
+      }
+      else {
+        let img = new Image(64, 64);
+        img.src = imgsrc;
+        obsList.push(img);
+        obsData.push(0);
+      }
     }
-    else {
-      let img = new Image(64, 64);
-      img.src = imgsrc;
-      obsList.push(img);
-      obsData.push(0);
-    }
-  }
 
-  chartdata.datasets.push({
-    data: obsData,
-    label: 'S2',
-    yAxisID: 'B',
-    pointStyle: obsList
-  });
-
-
-  for (i = 0; i < chartdata.labels.length; i++) {
-    let imgsrc = '';
-    for (j = 0; j < json[4].length; j++)
-      if (chartdata.labels[i] === json[1][j]['dti'].substr(0, 10))
-        imgsrc = json[1][j]['quicklook'];
-    if (imgsrc === '') {
-      obsList.push("");
-      obsData.push(null);
-    }
-    else {
-      let img = new Image(48, 48);
-      img.src = imgsrc;
-      obsList.push(img);
-      obsData.push(0);
-    }
+    chartdata.datasets.push({
+      data: obsData,
+      label: 'S2',
+      yAxisID: 'B',
+      pointStyle: obsList
+    });
   }
 
   //Draw changes lines
-  $.each(changes, function (idx, change) {
-    let filtered = json[4].filter(function (item) {
-      return item.type === change['uri'];
-    });
-    // alert(filtered.length)
+  if (json[4] != null)
+    $.each(changes, function (idx, change) {
+      let filtered = json[4].filter(function (item) {
+        return item.change.indexOf(change.key) > 0;
+      });
+      // alert(filtered.length)
 
-    let changeval = new Array(chartdata.labels.length).fill(null);
-    $.each(filtered, function (i, row) {
-      for (j = 0; j < chartdata.labels.length; j++)
-        if (chartdata.labels[j] >= row['dti1'].substr(0, 10) && chartdata.labels[j] <= row['dti2'].substr(0, 10))
-          changeval[j] = row['percentage'];
-    });
+      let changeval = new Array(chartdata.labels.length).fill(null);
+      $.each(filtered, function (i, row) {
+        for (j = 0; j < chartdata.labels.length; j++)
+          if (chartdata.labels[j] >= row['dti1'].substr(0, 10) && chartdata.labels[j] <= row['dti2'].substr(0, 10))
+            changeval[j] = row['percentage'];
+      });
 
-    if (json[4].length > 0)
+
       chartdata.datasets.push({
         data: changeval,
         label: change['name'],
         yAxisID: 'B',
         fill: false,
+        hidden: true,
         pointRadius: 3,
         borderWidth: 3,
         borderColor: change['color']
       });
-  });
-
-  //Draw damage lines
-  $.each(damages, function (idx, damage) {
-    let filtered = json[5].filter(function (item) {
-      return item.deterioration === damage['uri'];
     });
 
-
-    let damageval = new Array(chartdata.labels.length).fill(null);
-    $.each(filtered, function (i, row) {
-      for (j = 0; j < chartdata.labels.length; j++)
-        if (chartdata.labels[j] >= row['dti1'].substr(0, 10) && chartdata.labels[j] <= row['dti2'].substr(0, 10)) {
-
-          if (row['deterioration'].indexOf("VeryHigh") > 0)
-            damageval[j] = 80;
-          else
-            if (row['deterioration'].indexOf("High") > 0)
-              damageval[j] = 65;
-            else
-              if (row['deterioration'].indexOf("Mid") > 0)
-                damageval[j] = 50;
-              else
-                if (row['deterioration'].indexOf("Low") > 0)
-                  damageval[j] = 30;
-                else
-                  damageval[j] = 0;
-        }
-
-    });
-
-    if (json[5].length > 0)
-      chartdata.datasets.push({
-        data: damageval,
-        label: damage['name'],
-        yAxisID: 'B',
-        fill: false,
-        pointRadius: 3,
-        borderWidth: 3,
-        borderColor: damage['color']
-      });
-  });
-
+  /* //Draw damage lines
+   if(json[5]!=null)
+   $.each(damages, function (idx, damage) {
+     let filtered = json[5].filter(function (item) {
+       return item.deterioration === damage['uri'];
+     });
+ 
+ 
+     let damageval = new Array(chartdata.labels.length).fill(null);
+     $.each(filtered, function (i, row) {
+       for (j = 0; j < chartdata.labels.length; j++)
+         if (chartdata.labels[j] >= row['dti1'].substr(0, 10) && chartdata.labels[j] <= row['dti2'].substr(0, 10)) {
+ 
+           if (row['deterioration'].indexOf("VeryHigh") > 0)
+             damageval[j] = 80;
+           else
+             if (row['deterioration'].indexOf("High") > 0)
+               damageval[j] = 65;
+             else
+               if (row['deterioration'].indexOf("Mid") > 0)
+                 damageval[j] = 50;
+               else
+                 if (row['deterioration'].indexOf("Low") > 0)
+                   damageval[j] = 30;
+                 else
+                   damageval[j] = 0;
+         }
+ 
+     });
+ 
+     
+       chartdata.datasets.push({
+         data: damageval,
+         label: damage['name'],
+         yAxisID: 'B',
+         fill: false,
+     hidden: true,
+         pointRadius: 3,
+         borderWidth: 3,
+         borderColor: damage['color']
+       });
+   });
+   
+ */
   //Draw ndvi
-  $.each(ndvis, function (idx, ndvi) {
-    let filtered = json[6].filter(function (item) {
-      return item.type === ndvi['uri'];
-    });
+  if (json[5] != null)
+
+    $.each(ndvis, function (idx, ndvi) {
+      let filtered = json[5].filter(function (item) {
+        return item.ndvi.indexOf(ndvi.key) > 0;
+      });
 
 
-    let ndvival = new Array(chartdata.labels.length).fill(null);
-    $.each(filtered, function (i, row) {
-      for (j = 0; j < chartdata.labels.length; j++)
-        if (chartdata.labels[j] >= row['dti'].substr(0, 10)) {
-          ndvival[j] = row['percentage'];
-          // alert(row['percentage']);
+      let ndvival = new Array(chartdata.labels.length).fill(null);
+      $.each(filtered, function (i, row) {
+        for (j = 0; j < chartdata.labels.length; j++)
+          if (chartdata.labels[j] == row['dti'].substr(0, 10)) {
+            ndvival[j] = row['percentage'];
+            // alert(row['percentage']);
 
-        }
+          }
 
-    });
+      });
 
-    if (json[6].length > 0)
+
       chartdata.datasets.push({
         data: ndvival,
         label: ndvi['name'],
         yAxisID: 'B',
         fill: false,
+        hidden: true,
         pointRadius: 3,
         borderWidth: 3,
         borderColor: ndvi['color']
       });
-  });
+
+    });
 
 
   myChart.update();
@@ -318,8 +297,9 @@ function loadGraph() {
 
 var prefixesToQuery = "";
 
-function showOnMap(feats) {
-  FeatureVectorSource.clear();
+function showOnMap(feats, clear = true) {
+  if (clear === true)
+    FeatureVectorSource.clear();
   if (feats.length > 0) {
     FeatureVectorSource.addFeatures(feats);
     //FeatureVectorLayer.setStyle(styleFunction);
@@ -336,28 +316,59 @@ function showOnMap(feats) {
   }
 }
 
-$("#btnVillageSearch").click(function () {
-  let query = queriesFeature[0]['query'];
-  query = query.replace('?featurename', $("#featureuri").val());
+function showVillage(insee) {
+  let query = queryVillage[0]['query'];
+  query = query.replace('?featureURI', insee);
   query = prefixesToQuery + query;
   link = host + queryGeoJSON + encodeURIComponent(query);
   let format = new ol.format.GeoJSON();
   let feats;
+  let village;
   $.getJSON(link, function (result) {
-    feats = format.readFeatures(result, {
+    village = format.readFeatures(result, {
       dataProjection: 'EPSG:4326',
       featureProjection: 'EPSG:3857'
     });
-    showOnMap(feats);
+    showOnMap(village, true);
 
   });
-});
+}
 
+function searchByVillage(insee) {
+  let query = queryVillage[0]['query'];
+  query = query.replace('?featureURI', insee);
+  query = prefixesToQuery + query;
+  link = host + queryGeoJSON + encodeURIComponent(query);
+  let format = new ol.format.GeoJSON();
+  let feats;
+  let village;
+  $.getJSON(link, function (result) {
+    village = format.readFeatures(result, {
+      dataProjection: 'EPSG:4326',
+      featureProjection: 'EPSG:3857'
+    });
+    showOnMap(village, true);
+    // showOnMap(feats);  
+  });
+
+  $.getJSON(link, function (result) {
+    feats = format.readFeatures(result, {
+      dataProjection: 'EPSG:4326',
+      featureProjection: 'EPSG:4326'
+    });
+    $('#drawncoords').html(new ol.format.WKT().writeGeometry(feats[0].getGeometry())); 
+    clickToShow = true;
+    search();
+  });
+
+
+}
 
 function search() {
   let tempofilter = "";
   let intervalfilter = "";
   let instantfilter = "";
+  let instantfilterzone = "";
   let semanticfilter = "";
   if ($('#cboxdatetime').prop('checked')) {
     tempofilter = '?dt time:inXSDDateTime ?dti. \n FILTER(?dti>="' + $('#dtstart').val() + 'T00:00:00"^^xsd:dateTime && ?dti<="' + $('#dtend').val() + 'T00:00:00"^^xsd:dateTime) \n';
@@ -365,6 +376,7 @@ function search() {
       " ?timeInterval time:hasEnd/time:inXSDDateTime ?dti2. \n" +
       ' FILTER((?dti1 >="' + $('#dtstart').val() + 'T00:00:00"^^xsd:dateTime && ?dti1<="' + $('#dtend').val() + 'T00:00:00"^^xsd:dateTime) || (?dti2 >="' + $('#dtstart').val() + 'T00:00:00"^^xsd:dateTime && ?dti2<="' + $('#dtend').val() + 'T00:00:00"^^xsd:dateTime)). \n';
     instantfilter = ' FILTER(?dti >="' + $('#dtstart').val() + 'T00:00:00"^^xsd:dateTime && ?dti<="' + $('#dtend').val() + 'T00:00:00"^^xsd:dateTime). \n';
+    instantfilterzone = ' FILTER(?dti >="' + $('#dtstart').val() + 'T00:00:00+00:00"^^xsd:dateTime && ?dti<="' + $('#dtend').val() + 'T00:00:00+00:00"^^xsd:dateTime). \n';
   }
 
   // alert(intervalfilter);
@@ -373,6 +385,7 @@ function search() {
     tempoorder = " \n ORDER BY (?dti) \n";
   let spatialfilter = "";
   let spatialfilter2 = "";
+  let semfilter="";
   if ($('#cboxgeo').prop('checked')) {
     spatialfilter = 'filter(geof:sfContains("' + $('#drawncoords').html() + '"^^geo:wktLiteral, ?wkt)) \n';
     spatialfilter2 = 'filter(geof:sfContains(?wkt, "' + $('#drawncoords').html() + '"^^geo:wktLiteral)) \n ';
@@ -383,7 +396,10 @@ function search() {
   if ($('#cboxsem').prop('checked')) {
     let sem = $('#semantictree').treeview('getSelected');
     if (sem[0]['uri'].indexOf("change") > 0)
+    {
       query = queriesFeatureSemantic[1]['query'];
+      semfilter = sem[0]['class'];
+    }
     else
       if (sem[0]['uri'].indexOf("vineyard") > 0)
         query = queriesFeatureSemantic[0]['query'];
@@ -401,6 +417,8 @@ function search() {
   query = query.replace('intervalfilter', intervalfilter);
   query = query.replace('spatialfilter', spatialfilter);
   query = query.replace('instantfilter', instantfilter);
+  query = query.replace('instantfilterzone', instantfilterzone);
+  query = query.replace('semfilter', semfilter);
   //alert(query);
   query = prefixesToQuery + query;
   link = host + queryGeoJSON + encodeURIComponent(query);
@@ -413,7 +431,7 @@ function search() {
       dataProjection: 'EPSG:4326',
       featureProjection: 'EPSG:3857'
     });
-    showOnMap(feats);
+    showOnMap(feats, false);
   });
 }
 
@@ -421,9 +439,10 @@ function search() {
 var featureLookup = [];
 function loadFeatureLookup() {
   $.each(featureQueries, function (type, query) {
+    query = prefixesToQuery + query;
     $.getJSON(host + queryJSON + encodeURIComponent(query), function (result) {
       $.each(result['results']['bindings'], function (key, val) {
-        featureLookup.push({ "name": val['name']['value'], "desc": type, "uri": val['uri']['value'] });
+        featureLookup.push({ "name": val['name']['value'], "desc": val['uri']['value'].substring(val['uri']['value'].length - 5), "uri": val['uri']['value'] });
       });
     });
   });
@@ -514,21 +533,30 @@ $(document).ready(function () {
   loadFeatureLookup();
   var options = {
     data: featureLookup,
-    getValue: "name",
-    template: {
-      type: "description",
-      fields: {
-        description: "desc"
-      }
+    getValue: function (element) {
+      return element.name + " - " + element.desc;
     },
+    /* template: {
+       type: "description",
+       fields: {
+         description: "desc"
+       }
+     },
+     */
     list: {
       match: {
         enabled: true
       },
       onSelectItemEvent: function () {
-        var value = $("#feature").getSelectedItemData().name;
+        var value = $("#feature").getSelectedItemData().desc;
+        $("#featureuri").val(value);
+        showVillage(value);
+      },
 
-        $("#featureuri").val(value).trigger("change");
+      onChooseEvent: function () {
+        var value = $("#feature").getSelectedItemData().desc;
+        $("#featureuri").val(value);
+        searchByVillage(value);
       }
     },
     theme: "square"
@@ -538,7 +566,13 @@ $(document).ready(function () {
 
   $('#btnGraphic').hide();
   $('#semantictree').treeview({ data: semantictree });
-  $('#semantictree').treeview('collapseAll', { silent: true });
+  $('#semantictree').treeview('expandAll', { silent: true });
+  let treeViewObject = $('#semantictree').data('treeview');
+  let allCollapsedNodes = treeViewObject.getCollapsed();
+  let allExpandedNodes = treeViewObject.getExpanded();
+  let allNodes = allCollapsedNodes.concat(allExpandedNodes);
+
+  treeViewObject.selectNode(allNodes[2].nodeId);
   $('#feature').tooltip();
 });
 
@@ -546,11 +580,19 @@ $(document).ready(function () {
 
 function loadInfo(num, q, title) {
   let str = "";
+  //alert(title);
   $.getJSON(q, function (result) {
     let str = "[";
     let heads = result['head']['vars'];
     let data = result['results']['bindings'];
     let th = [];
+    let height = "250px";
+    if (data.length < 4)
+      height = "100px";
+    else
+      if (data.length < 10)
+        height = "150px";
+
     $.each(heads, function (index2, col) {
       th.push({ "title": col, "field": col });
     });
@@ -565,19 +607,24 @@ function loadInfo(num, q, title) {
     });
     str = str.replace(/,\s*$/, "");
     str = str + ']';
-    let t = new Tabulator("#list" + num, {
-      data: JSON.parse(str),
-      columns: th,
-      height: "250px"
+    if (data.length > 0) {
+      let t = new Tabulator("#list" + num, {
+        data: JSON.parse(str),
+        columns: th,
+        height: height
 
-    });
-    table[num] = t;;
-    tableheader[num] = th;
+      });
+      table[num] = t;;
+      tableheader[num] = th;
 
-    json[num] = JSON.parse(str);
-    let html = "<h3>" + title + '</h3><div class="submenu"><button type="button"  onclick="downloadCSV(' + num + ')" class="btn btn-success">Export CSV</button></div>';
-    //<button type="button" class="btn btn-success" data-toggle="modal" data-target="#querydialog" data-query="' + num + '">Open query</button><button type="button" class="btn btn-success" data-toggle="modal" data-target="#ontology" data-onto="' + num + '">View ontology</button>
-    $("#title" + num).html(html);
+      json[num] = JSON.parse(str);
+
+      let html = "<h3>" + title + '</h3><div class="submenu"><button type="button"  onclick="downloadCSV(' + num + ')" class="btn btn-success">Export CSV</button></div>';
+      //<button type="button" class="btn btn-success" data-toggle="modal" data-target="#querydialog" data-query="' + num + '">Open query</button><button type="button" class="btn btn-success" data-toggle="modal" data-target="#ontology" data-onto="' + num + '">View ontology</button>
+      $("#title" + num).html(html);
+    }
+    else
+      json[num] = null;
     //alert(title);
   });
 }
@@ -587,59 +634,49 @@ function loadInfo(num, q, title) {
 
 
 $('#btnGraphic').click(function () {
-  if ($('#btnGraphic').html() == "Graphical mode") {
-    $('#tabularresults').hide();
-    $('#meteochart').show();
-    $('#btnGraphic').html("Tabular mode");
+  $('#tabularresults').toggle();
+  $('#meteochart').toggle();
+  if ($('#btnGraphic').html() == "Show chart") {
+    $('#btnGraphic').html("Show tabulars");
+    loadGraph();
   }
   else {
-    $('#tabularresults').show();
-    $('#meteochart').hide();
-    $('#btnGraphic').html("Graphical mode");
+    $('#btnGraphic').html("Show chart");
   }
 });
 
-$("#meteochart").onclick = function (evt) {
-  let activePoints = myChart.getElementAtEvent(event);
-
-  // make sure click was on an actual point
-  if (activePoints.length > 0) {
-    let clickedDatasetIndex = activePoints[0]._datasetIndex;
-    let clickedElementindex = activePoints[0]._index;
-    //var label = myLine.data.labels[clickedElementindex];
-    //var value = myLine.data.datasets[clickedDatasetIndex].data[clickedElementindex];     
-    //alert("Clicked: " + label + " - " + value);
-    let img = myChart.data.datasets[clickedDatasetIndex]._meta[0].data[clickedElementindex]._model.pointStyle;
-    window.open(img.src);
-  }
-};
-
 
 function viewFeature(id) {
-  $('#tabularresults').hide();
-  $('#btnGraphic').html("Tabular mode");
+  //$('#tabularresults').hide();
+  $('#btnGraphic').html("Show chart");
   let WKTformat = new ol.format.WKT();
   let featuregeom = WKTformat.writeGeometry(FeatureVectorSource.getFeatureById(id).getGeometry().transform('EPSG:3857', 'EPSG:4326'), { decimals: 3 });
   let uri = FeatureVectorSource.getFeatureById(id).get("uri");
-  $("#village").html("<h3>" + FeatureVectorSource.getFeatureById(id).get("name") + "</h3>");
+  let parcel = uri;
+  let landcover = FeatureVectorSource.getFeatureById(id).get("landcover");
+  $("#village").html("<h3> Parcel: " + parcel.substring(parcel.lastIndexOf("/") + 1) + "(LC: " + landcover.substring(landcover.lastIndexOf("/") + 1) + ")</h3>");
   let tempofilter = "";
   let intervalfilter = "";
   let instantfilter = "";
+  let instantfilterzone = "";
   if ($('#cboxdatetime').prop('checked')) {
     tempofilter = '?dt time:inXSDDateTime ?dti. \n FILTER(?dti>="' + $('#dtstart').val() + 'T00:00:00"^^xsd:dateTime && ?dti<="' + $('#dtend').val() + 'T00:00:00"^^xsd:dateTime) \n';
     intervalfilter = "?timeInterval time:hasBeginning/time:inXSDDateTime ?dti1. \n" +
       " ?timeInterval time:hasEnd/time:inXSDDateTime ?dti2. \n" +
       ' FILTER((?dti1 >="' + $('#dtstart').val() + 'T00:00:00"^^xsd:dateTime && ?dti1<="' + $('#dtend').val() + 'T00:00:00"^^xsd:dateTime) || (?dti2 >="' + $('#dtstart').val() + 'T00:00:00"^^xsd:dateTime && ?dti2<="' + $('#dtend').val() + 'T00:00:00"^^xsd:dateTime)). \n';
     instantfilter = ' FILTER(?dti >="' + $('#dtstart').val() + 'T00:00:00"^^xsd:dateTime && ?dti<="' + $('#dtend').val() + 'T00:00:00"^^xsd:dateTime). \n';
+    instantfilterzone = ' FILTER(?dti >="' + $('#dtstart').val() + 'T00:00:00+00:00"^^xsd:dateTime && ?dti<="' + $('#dtend').val() + 'T00:00:00+00:00"^^xsd:dateTime). \n';
+
 
   }
   // alert(intervalfilter);             
   let spatialfilterDoc = 'filter(geof:sfContains(?wkt, "' + featuregeom + '"^^geo:wktLiteral)) \n ';
   let featureURI = '<' + uri + '>';
-  for (i = 1; i < queriesDoc.length; i++) {
+  for (i = 0; i < queriesDoc.length; i++) {
     let query = queriesDoc[i]['query'];
     query = query.replace('tempofilter', tempofilter);
     query = query.replace('intervalfilter', intervalfilter);
+    query = query.replace('instantfilterzone', instantfilterzone);
     query = query.replace('instantfilter', instantfilter);
     query = query.replace('spatialfilterDoc', spatialfilterDoc);
     query = query.replace('?featurefilterDoc', featureURI);
@@ -650,8 +687,9 @@ function viewFeature(id) {
     loadInfo(i, link, queriesDoc[i]['title']);
   }
 
-  setTimeout(function () { loadGraph(); }, 3000);
+  //setTimeout(function () { loadGraph(); }, 5000);
   $('#btnGraphic').show();
-  $('#meteochart').show();
+  $('#meteochart').hide();
+  $('#tabularresults').show();
 
 }

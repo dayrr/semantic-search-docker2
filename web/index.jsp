@@ -19,6 +19,7 @@
 
     <script src="data.js"></script>
     <script src="jquery.easy-autocomplete.min.js"></script>
+    <script src="jquery.easy-autocomplete.min.js"></script>
     <link href="semsearch.css" rel="stylesheet">
     <link href="easy-autocomplete.min.css" rel="stylesheet">
     <title>Semantic search</title>
@@ -39,7 +40,7 @@
                         To <input type="date" id="dtend" value="2017-05-01" min="2016-01-01" max="2018-12-31"></div>
                 </div>
                 <div class="panel panel-default">
-                    <div class="panel-heading"> <input type="checkbox" id="cboxsem"><span
+                    <div class="panel-heading"> <input type="checkbox" id="cboxsem" checked="checked"><span
                             class="glyphicon glyphicon-book"></span> What</div>
                     <div id="semantictree"></div>
                 </div>
@@ -48,24 +49,26 @@
                     <div class="panel-heading"> <input type="checkbox" checked='checked' id="cboxgeo"><span
                             class="glyphicon glyphicon-map-marker"></span> Where</div>
                     <div class="panel-body" id="geosearch">
-                        Search for village <input id="feature" type="text" data-placement="top"
-                            title="Please enter (a part of) the village name">
-                        <button type="button" id='btnVillageSearch' class="btn btn-success">
-                            <span class="fas fa-map-marked"></span>
-                            Locate
-                        </button>
-                        <div id='drawncoords'></div>
-                        <div id=" mouse-position" class="mouse-position"></div>
+                        Search by village <input id="feature" type="text" data-placement="top"
+                            title="">
+                        
+                        <div id="mouse-position" class="mouse-position"></div>
+                        Search by drawing the area
                         <div id="mapcontainerDraw">
                             <div id="mapDraw" class="map"></div>
+
+
                         </div>
                         <div style="text-align: center">
                             <button type="button" class="btn btn-success" id="btnWKTReset"> <span
-                                    class="fas fa-redo-alt"></span> Clear and Draw </button>
+                                    class="fas fa-redo-alt"></span> Clear and Redraw </button>
+
                         </div>
+                    
+                        <div id='drawncoords'></div>
                         <div id='layers'>
                             <div class="panel panel-default">
-                                <div class="panel-heading">Background layers (WMS)</div>
+                                <div class="panel-heading">Map background layers (WMS)</div>
                                 <div class="panel-body" id="WMSLayers">
                                 </div>
                             </div>
@@ -84,13 +87,14 @@
 
             </div>
             <div class="col-md-8">
-                <div id="village"></div>
-                <div class="floatright">
-                    <button type="button" id='btnGraphic' class="btn btn-success">Tabular mode</button>
+                <div id="village"></div><div>
+                    <button type="button" id='btnGraphic' class="btn btn-success">Show chart</button>
                 </div>
                 <canvas id='meteochart'> </canvas>
                 <div id='tabularresults'>
-                    <div id='title1'> </div>
+                     <div id='title0'></div>
+		     <div id='list0'></div>
+		     <div id='title1'> </div>
                     <div id='list1'> </div>
                     <div id='title2'> </div>
                     <div id='list2'></div>
